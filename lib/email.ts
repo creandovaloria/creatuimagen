@@ -194,7 +194,7 @@ export async function sendAdminNotification({
   }
 }
 
-export async function sendAbandonmentNotification({ nombre, slug, email, whatsapp, unit = 'BIOS' }: WelcomeEmailProps) {
+export async function sendAbandonmentNotification({ nombre, slug, email, whatsapp, monto = 950, unit = 'BIOS' }: WelcomeEmailProps) {
   try {
     const { client, from } = getResendClient(unit);
     let finalWhatsApp = null;
@@ -208,8 +208,8 @@ export async function sendAbandonmentNotification({ nombre, slug, email, whatsap
         finalWhatsApp = clean;
       }
     }
-    // Generar un mensaje de recuperación de venta personalizado y persuasivo para carritos abandonados
-    const waText = `¡Hola ${nombre}! Te saludo de Crea Tu Imagen Online. Notamos que iniciaste el proceso para adquirir tu Bio Digital Profesional (https://bios.creatuimagen.online/${slug}) pero no lograste completar tu pago. ¿Tuviste algún inconveniente con la pasarela o te gustaría que te apoye personalmente a activar tu cuenta?`;
+    // Generar un mensaje de recuperación de venta personalizado y persuasivo para carritos abandonados (incluyendo el monto)
+    const waText = `¡Hola ${nombre}! Te saludo de Crea Tu Imagen Online. Notamos que iniciaste el proceso para adquirir tu Bio Digital Profesional por $${monto} MXN (https://bios.creatuimagen.online/${slug}) pero no lograste completar tu pago. ¿Tuviste algún inconveniente con la pasarela o te gustaría que te apoye personalmente a activar tu cuenta?`;
     const waEncoded = encodeURIComponent(waText);
     const waLink = finalWhatsApp ? `https://wa.me/${finalWhatsApp}?text=${waEncoded}` : null;
     
@@ -224,6 +224,7 @@ export async function sendAbandonmentNotification({ nombre, slug, email, whatsap
           <p>El cliente inició el proceso de pago pero aún no lo ha completado.</p>
           <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
           <p><b>Cliente:</b> ${nombre}</p>
+          <p><b>Monto del intento:</b> $${monto} MXN</p>
           <p><b>WhatsApp:</b> ${whatsapp || 'No proporcionado'}</p>
           <p><b>Email:</b> ${email}</p>
           

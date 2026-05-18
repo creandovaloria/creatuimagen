@@ -9,9 +9,10 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { nombre, email, slug, whatsapp } = body;
+    const monto = Number(process.env.MP_TEST_PRICE) || 950;
 
     // Notificar al admin sobre el intento de compra (Lead)
-    await sendAbandonmentNotification({ nombre, slug, email, whatsapp, unit: 'BIOS' });
+    await sendAbandonmentNotification({ nombre, slug, email, whatsapp, monto, unit: 'BIOS' });
 
     const client = getMercadoPagoClient('BIOS');
 
