@@ -489,6 +489,29 @@ ADD COLUMN IF NOT EXISTS significado_personal text;
 ```
 2. Validar siempre en entornos locales levantando un servidor controlado para ver el `stdout` y capturar el stack trace del webhook al recibir payloads de prueba.
 
+### Error 27 — Error 404 Estático en Next.js App Router (Falta de force-dynamic)
+**Síntoma:** Al intentar acceder a una página de edición dinámica basada en slugs (`/admin/perfiles/[slug]`) correspondiente a una Bio de reciente creación, el navegador devolvía un error 404 genérico instantáneo, a pesar de que el registro y su usuario Auth existían perfectamente en la base de datos.
+**Causa:**
+En Next.js App Router, las rutas con parámetros dinámicos (como `[slug]`) que no utilizan funciones explícitamente dinámicas del ciclo de vida del framework (ej: `cookies()`, `headers()`, etc.) son optimizadas automáticamente como páginas estáticas en el momento de la compilación (`next build`). Como el slug del nuevo cliente se generó posterior al build en Vercel, Next.js asumía que la ruta no existía estáticamente y bloqueaba la consulta disparando un 404 inmediato.
+**Solución:**
+Forzar la evaluación dinámica en tiempo de ejecución (Server-Side Rendering) agregando la siguiente directiva al inicio del archivo de la página:
+```typescript
+export const dynamic = 'force-dynamic'
+```
+Esto garantiza que Next.js compile y procese la página en tiempo de ejecución en cada petición del usuario, cargando las llaves del servidor y las consultas a Supabase al instante.
+
+### Decisión 28 — Aislamiento Multitenant e Inteligencia de Sesión Activa
+**Problema:** Al implementar seguridad basada en RLS (`auth.uid() = user_id`), si un cliente intentaba abrir el enlace de edición de su Bio recibido en su correo, pero su navegador ya guardaba una sesión activa con otra cuenta (ej: un correo de administrador o de pruebas previo), la base de datos bloqueaba la lectura, devolviendo vacío, lo que Next.js interpretaba con un confuso 404. El cliente no lograba discernir por qué su enlace parecía "roto".
+**Solución:**
+1. Realizar la consulta de existencia del perfil usando el cliente administrador privilegiado (`adminClient` con `service_role` key) en el Server Component.
+2. Si el perfil existe, validar si el usuario autenticado actual es el administrador general o el dueño legítimo (`user.id === profile.user_id`).
+3. Si no tiene permisos, en lugar de un 404 genérico, renderizar una hermosa pantalla interactiva de **Acceso Restringido** que indique la discrepancia de cuentas de forma didáctica:
+   * Muestra el email de la sesión activa actual en el navegador.
+   * Muestra el email correcto con el cual compró y se registró la Bio.
+   * Proporciona un botón destacado de **Cerrar Sesión** en color de alerta (que borra la sesión de la otra cuenta con un clic) junto a un botón de retorno a su panel.
+**Beneficio:** Evita fricción en el onboarding, elimina falsos reportes de links rotos, y empodera al usuario final para autodiagnosticar y solucionar conflictos de sesión al instante de forma autónoma.
+
 ---
 © 2026 Creando Valor IA
+
 
