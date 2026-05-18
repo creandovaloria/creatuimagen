@@ -6,7 +6,7 @@ import { MercadoPagoConfig } from 'mercadopago';
 export type BusinessUnit = 'BIOS' | 'EVENTOS' | 'ARTURO';
 
 export function getMercadoPagoClient(unit: BusinessUnit = 'BIOS') {
-  // Trigger clean Vercel deployment with updated environment variables
+  // Force fresh Vercel compilation to clear env var caching
   // Evitar errores durante el build de Next.js
   if (typeof window === 'undefined' && process.env.NODE_ENV === 'production' && !process.env.MP_ACCESS_TOKEN && !process.env.MP_BIOS_ACCESS_TOKEN) {
     return new MercadoPagoConfig({ accessToken: 'dummy' });
