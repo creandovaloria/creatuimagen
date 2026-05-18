@@ -136,7 +136,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
           <p className="text-sm text-slate-500 mb-6">
             Usa esta sección para agregar botones dinámicos adicionales (como agendar citas, descargar un PDF, enlaces a tu blog, etc).
           </p>
-          <LinksManager perfilId={fullProfile.id} initialLinks={fullProfile.links} />
+          <LinksManager perfilId={fullProfile.id} initialLinks={fullProfile.links} isAdmin={isAdmin} />
         </div>
       </div>
     </div>

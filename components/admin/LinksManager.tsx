@@ -3,7 +3,15 @@
 import { useState } from 'react'
 import { PerfilLinkData, insertPerfilLink, deletePerfilLink } from '@/lib/supabase'
 
-export default function LinksManager({ perfilId, initialLinks }: { perfilId: string, initialLinks: PerfilLinkData[] }) {
+export default function LinksManager({ 
+  perfilId, 
+  initialLinks,
+  isAdmin = false
+}: { 
+  perfilId: string, 
+  initialLinks: PerfilLinkData[],
+  isAdmin?: boolean
+}) {
   const [links, setLinks] = useState<PerfilLinkData[]>(initialLinks)
   const [isAdding, setIsAdding] = useState(false)
   const [newLink, setNewLink] = useState({ titulo: '', url: '', icono: '🔗', orden: 0 })
@@ -12,21 +20,39 @@ export default function LinksManager({ perfilId, initialLinks }: { perfilId: str
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSaving(true)
-    
-    const { data, error } = await insertPerfilLink({
+
+    const payload = {
       perfil_id: perfilId,
       titulo: newLink.titulo,
       url: newLink.url,
       icono: newLink.icono,
       orden: links.length // Append to end
-    })
+    }
 
-    if (!error && data) {
-      setLinks([...links, data])
+    let insertedData: any = null
+    let error: any = null
+
+    if (isAdmin) {
+      const res = await fetch('/api/admin/links', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'insert', linkData: payload })
+      })
+      const resData = await res.json()
+      if (res.ok) insertedData = resData.data
+      else error = { message: resData.error }
+    } else {
+      const result = await insertPerfilLink(payload)
+      insertedData = result.data
+      error = result.error
+    }
+
+    if (!error && insertedData) {
+      setLinks([...links, insertedData])
       setNewLink({ titulo: '', url: '', icono: '🔗', orden: 0 })
       setIsAdding(false)
     } else {
-      alert("Error al agregar link: " + error?.message)
+      alert("Error al agregar link: " + (error?.message || "Error desconocido"))
     }
     setIsSaving(false)
   }
@@ -34,7 +60,21 @@ export default function LinksManager({ perfilId, initialLinks }: { perfilId: str
   const handleDelete = async (id: string) => {
     if (!confirm("¿Seguro que quieres eliminar este enlace?")) return
     
-    const { error } = await deletePerfilLink(id)
+    let error: any = null
+
+    if (isAdmin) {
+      const res = await fetch('/api/admin/links', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', linkId: id })
+      })
+      const resData = await res.json()
+      if (!res.ok) error = { message: resData.error }
+    } else {
+      const result = await deletePerfilLink(id)
+      error = result.error
+    }
+
     if (!error) {
       setLinks(links.filter(l => l.id !== id))
     } else {
