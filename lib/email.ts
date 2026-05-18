@@ -13,7 +13,7 @@ function getResendClient(unit: BusinessUnit = 'BIOS') {
     case 'BIOS':
     case 'EVENTOS':
       apiKey = process.env.RESEND_BIOS_CREA_TU_IMAGEN_API_KEY || '';
-      fromEmail = 'Crea Tu Imagen <bienvenida@mail.bios.creatuimagen.online>';
+      fromEmail = 'Crea Tu Imagen Online <bienvenida@mail.bios.creatuimagen.online>';
       break;
     case 'ARTURO':
       apiKey = process.env.RESEND_ARTURO_API_KEY || '';
@@ -99,7 +99,7 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, contr
 
           <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #f1f5f9; text-align: center;">
             <p style="font-size: 12px; color: #94a3b8; margin: 0;">¿Alguna duda? Escríbenos por WhatsApp o responde a este correo.</p>
-            <p style="font-size: 12px; color: #cbd5e1; margin-top: 10px; font-weight: bold;">CREA TU IMAGEN .</p>
+            <p style="font-size: 12px; color: #cbd5e1; margin-top: 10px; font-weight: bold;">CREA TU IMAGEN ONLINE</p>
           </div>
         </div>
       `,
@@ -150,7 +150,7 @@ export async function sendAdminNotification({ nombre, slug, email, whatsapp, uni
           ` : ''}
           
           <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-          <p style="font-size: 10px; color: #999;">Notificación automática de Crea Tu Imagen Platform</p>
+          <p style="font-size: 10px; color: #999;">Notificación automática de Crea Tu Imagen Online</p>
         </div>
       `,
     });
