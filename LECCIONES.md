@@ -527,7 +527,36 @@ Implementar una estrategia de prevención en dos niveles directamente en el fron
 2. **Bloqueo físico absoluto en el submit:** Si el usuario ignora la advertencia e intenta presionar el botón de pago con un dominio inválido conocido, la función `handleSubmit` congela el envío, bloquea el paso al checkout y lanza una alerta explicativa obligándolo a corregir el correo.
 3. **Respaldo visual en la Notificación Admin:** En el correo automático de notificación de venta al administrador, se incluyó una caja verde destacada mostrando exactamente a qué email se enviaron los accesos automáticos, permitiendo una rápida auditoría visual del correo y facilitando el contacto vía WhatsApp en caso de cualquier inconveniente.
 
+### Decisión 31 — Webhook de Monitoreo de Rebotes en Resend (Alerta Admin)
+**Problema:** Si el correo de bienvenida o credenciales rebota debido a un correo erróneo del cliente que pasó los filtros, no hay forma automática de saberlo, lo que deja al cliente sin accesos.
+**Solución:**
+1. Crear un webhook seguro `/api/resend-webhook` que verifique las firmas criptográficas de Resend usando `svix`.
+2. Suscribirse a los eventos `email.bounced` y `email.complained`.
+3. Al detectar un rebote, disparar una alerta roja automática al administrador (`creandovalor.ia@gmail.com`) con los datos del cliente, el correo rebotado y un enlace para enviarle un WhatsApp directo y resolverlo manualmente.
+
+---
+
+## 🐛 Errores y soluciones — Sesión Mayo 2026 (Segunda Parte)
+
+### Error 31 — Violación de RLS al Editar Perfiles de Clientes desde el Admin
+**Síntoma:** Al intentar guardar cambios como administrador en el perfil de un cliente, la interfaz mostraba `❌ Error: new row violates row-level security policy for table "contactos_vcf"`.
+**Causa:** El cliente Supabase anónimo estándar en el frontend no tiene permisos para actualizar las tablas `perfiles` y `contactos_vcf` de otros usuarios bajo las políticas RLS restrictivas.
+**Solución:**
+1. Crear endpoints administrativos privilegiados en el backend (`/api/admin/update-profile` y `/api/admin/links`) que utilizan el cliente administrador con `service_role` key (bypasseando RLS de forma segura).
+2. Proteger los endpoints validando la identidad del usuario logueado en el servidor para permitir su ejecución únicamente a `creandovalor.ia@gmail.com`.
+3. Modificar `ProfileForm` y `LinksManager` para que, cuando el usuario autenticado sea admin (`isAdmin=true`), las operaciones de guardado, inserción y borrado de links se enruten a través de las APIs privadas en lugar del cliente de base de datos anónimo.
+
+### Error 32 — Violación de Restricción UNIQUE en Dominio Personalizado Vacío
+**Síntoma:** Al guardar cambios de un perfil en el panel de administrador, saltaba el error `duplicate key value violates unique constraint "perfiles_custom_domain_key"`.
+**Causa:** La columna `custom_domain` tiene un índice `UNIQUE`. Al dejar el campo vacío, el formulario frontend enviaba una cadena de texto vacía `""`. En PostgreSQL, múltiples valores `NULL` están permitidos en una columna única, pero múltiples cadenas vacías `""` no, provocando la colisión.
+**Solución:** Modificar `handleSubmit` en el formulario para sanear el campo `custom_domain` antes de enviarlo:
+```typescript
+custom_domain: formData.custom_domain ? formData.custom_domain.trim() : null
+```
+Al convertir cadenas vacías a `null`, Postgres permite que múltiples perfiles no tengan dominio personalizado sin arrojar errores de restricción única.
+
 ---
 © 2026 Creando Valor IA
+
 
 

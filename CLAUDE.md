@@ -81,6 +81,7 @@ Lee este archivo al inicio de cada sesión para entender el proyecto completo.
 | `NEXT_PUBLIC_SUPABASE_URL` | Base de Datos | Supabase Dashboard |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Base de Datos | Supabase Dashboard |
 | `SUPABASE_SERVICE_ROLE_KEY` | Admin DB (Webhook) | Supabase Dashboard |
+| `RESEND_WEBHOOK_SECRET` | Secreto firma Svix | Resend Webhook |
 
 ---
 
