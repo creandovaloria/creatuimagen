@@ -43,3 +43,5 @@ next-env.d.ts
 # Env vars doc
 ENV-VARIABLES.md
 .env*.local
+ACCESOS.md
+/ACCESOS.md
