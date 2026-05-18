@@ -38,6 +38,10 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, contr
   try {
     const { client, from } = getResendClient(unit);
     
+    // Generar texto personalizado para el botón de WhatsApp
+    const waText = `¡Hola! Soy ${nombre}. Acabo de adquirir mi Bio Digital Profesional por $${monto} MXN (Estado: Completado ✅) y necesito soporte para la configuración. Mi link reservado es: bios.creatuimagen.online/${slug}`;
+    const waEncoded = encodeURIComponent(waText);
+    
     const data = await client.emails.send({
       from: from, 
       to: email,
@@ -92,7 +96,7 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, contr
             Configurar mi Bio ahora
           </a>
 
-          <a href="https://wa.me/525555027042?text=Hola!%20Soy%20${encodeURIComponent(nombre)}.%20Necesito%20ayuda%20para%20configurar%20mi%20Bio:%20bios.creatuimagen.online/${slug}" 
+          <a href="https://wa.me/525555027042?text=${waEncoded}" 
              style="display: block; background: #f8fafc; color: #2563eb; padding: 15px; border-radius: 16px; text-decoration: none; text-align: center; font-weight: bold; font-size: 14px; border: 1px solid #e2e8f0;">
             💬 Hablar con soporte por WhatsApp
           </a>
