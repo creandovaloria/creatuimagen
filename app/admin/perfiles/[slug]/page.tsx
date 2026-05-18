@@ -118,7 +118,7 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
       <div className="space-y-8">
         {/* Top: Profile & VCard Form */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-          <ProfileForm profile={fullProfile} />
+          <ProfileForm profile={fullProfile} isAdmin={isAdmin} />
         </div>
 
         {/* Admin Only: Email Management Panel */}

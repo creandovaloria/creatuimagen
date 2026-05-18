@@ -5,6 +5,7 @@ import { updatePerfilConVCF, PerfilData, ContactoVCFData } from '@/lib/supabase'
 
 interface ProfileFormProps {
   profile: PerfilData & { vcf: ContactoVCFData | null }
+  isAdmin?: boolean
 }
 
 const InputField = ({ label, name, type = "text", placeholder = "", value, onChange }: any) => (
@@ -21,7 +22,7 @@ const InputField = ({ label, name, type = "text", placeholder = "", value, onCha
   </div>
 )
 
-export default function ProfileForm({ profile }: ProfileFormProps) {
+export default function ProfileForm({ profile, isAdmin = false }: ProfileFormProps) {
   const [formData, setFormData] = useState({
     // Perfil Básico
     nombre: profile.nombre,
@@ -93,36 +94,60 @@ export default function ProfileForm({ profile }: ProfileFormProps) {
     e.preventDefault()
     setIsSaving(true)
     setMessage('')
-    
-    const { error } = await updatePerfilConVCF(
-      profile.slug,
-      profile.id,
-      {
-        nombre: formData.nombre,
-        rol: formData.rol,
-        bio: formData.bio,
-        foto_url: formData.foto_url,
-        theme_primary: formData.theme_primary,
-        theme_accent: formData.theme_accent,
-        instagram: formData.instagram,
-        linkedin: formData.linkedin,
-        tiktok: formData.tiktok,
-        facebook: formData.facebook,
-        youtube: formData.youtube,
-         whatsapp: formData.whatsapp,
-        usa_colores_tema: formData.usa_colores_tema,
-        custom_domain: formData.custom_domain,
-        user_id: formData.user_id || null,
-      },
-      {
-        nombre_legal: formData.vcard_nombre_legal,
-        telefono: formData.vcard_telefono,
-        email: formData.vcard_email,
-        website: formData.vcard_website,
-        company: formData.vcard_company,
-      }
-    )
-    
+
+    const perfilUpdates = {
+      nombre: formData.nombre,
+      rol: formData.rol,
+      bio: formData.bio,
+      foto_url: formData.foto_url,
+      theme_primary: formData.theme_primary,
+      theme_accent: formData.theme_accent,
+      instagram: formData.instagram,
+      linkedin: formData.linkedin,
+      tiktok: formData.tiktok,
+      facebook: formData.facebook,
+      youtube: formData.youtube,
+       whatsapp: formData.whatsapp,
+      usa_colores_tema: formData.usa_colores_tema,
+      custom_domain: formData.custom_domain,
+      user_id: formData.user_id || null,
+    }
+
+    const vcfUpdates = {
+      nombre_legal: formData.vcard_nombre_legal,
+      telefono: formData.vcard_telefono,
+      email: formData.vcard_email,
+      website: formData.vcard_website,
+      company: formData.vcard_company,
+    }
+
+    let error: any = null
+
+    if (isAdmin) {
+      // Admin: usa el endpoint que bypasea RLS con service_role
+      const res = await fetch('/api/admin/update-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug: profile.slug,
+          perfilId: profile.id,
+          perfilUpdates,
+          vcfUpdates,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) error = { message: data.error }
+    } else {
+      // Usuario normal: usa el cliente anónimo sujeto a RLS
+      const result = await updatePerfilConVCF(
+        profile.slug,
+        profile.id,
+        perfilUpdates,
+        vcfUpdates,
+      )
+      error = result.error
+    }
+
     if (error) setMessage(`❌ Error: ${error.message}`)
     else setMessage('✅ Perfil actualizado correctamente')
     setIsSaving(false)
