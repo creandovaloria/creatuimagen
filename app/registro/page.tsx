@@ -268,6 +268,24 @@ export default function RegistroPage() {
           Al continuar, aceptas que te enviemos tus accesos vía WhatsApp y Email. El proceso de configuración toma menos de 2 minutos.
         </p>
       </div>
+
+      {/* 🟢 Botón Flotante de WhatsApp con Tooltip Premium */}
+      <a
+        href="https://wa.me/525555027042?text=¡Hola!%20Tengo%20una%20duda%20o%20problema%20con%20el%20registro%20de%20mi%20Bio%20Digital."
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 bg-[#25d366] hover:bg-[#20ba5a] text-white p-4 rounded-full shadow-2xl shadow-[#25d366]/30 flex items-center justify-center transform hover:scale-110 active:scale-95 transition-all duration-300 group cursor-pointer"
+        aria-label="Contactar por WhatsApp"
+      >
+        {/* Tooltip moderno de aparición suave */}
+        <span className="absolute right-16 bg-slate-900 text-white text-[11px] font-black px-4 py-2 rounded-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-xl shadow-slate-950/20 pointer-events-none">
+          💬 ¿Necesitas ayuda? Escríbenos
+        </span>
+        {/* Icono de WhatsApp */}
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-current" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.835-3.003c1.685.999 3.325 1.52 5.172 1.521 5.392 0 9.778-4.38 9.781-9.774.001-2.611-1.015-5.07-2.86-6.918C17.075 3.978 14.61 2.96 12.008 2.96c-5.392 0-9.78 4.38-9.783 9.774a9.705 9.705 0 0 0 1.526 5.15L2.77 21.23l3.411-.895z"/>
+        </svg>
+      </a>
     </div>
   );
 }
