@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { getSupabaseAdmin } from './supabase-admin';
 
 /**
  * Gestor de Emails por Unidad de Negocio (Resend)
@@ -269,29 +270,78 @@ export async function sendAdminBounceAlert({
     const borderColor = '#ef4444';
     const textColor = '#991b1b';
 
+    // 🔍 Jalar datos reales de Supabase usando el correo fallido
+    let clientName = '(Desconocido)';
+    let clientWhatsApp = '';
+    let clientSlug = '';
+    let waLink = '';
+
+    const supabase = getSupabaseAdmin();
+    if (supabase && toAddresses.length > 0) {
+      const emailToLookup = toAddresses[0].toLowerCase().trim();
+      const { data: perfil } = await supabase
+        .from('perfiles')
+        .select('nombre, whatsapp, slug')
+        .ilike('email', emailToLookup)
+        .maybeSingle();
+
+      if (perfil) {
+        clientName = perfil.nombre;
+        clientWhatsApp = perfil.whatsapp || '';
+        clientSlug = perfil.slug;
+
+        if (clientWhatsApp) {
+          const cleanNum = clientWhatsApp.replace(/\D/g, '');
+          const finalNum = cleanNum.startsWith('52') ? cleanNum : `52${cleanNum}`;
+          const messageText = `Hola ${clientName}, notamos un inconveniente con el correo electrónico registrado para tu Bio digital de Crea Tu Imagen. Queremos ayudarte a configurarlo de inmediato.`;
+          waLink = `https://wa.me/${finalNum}?text=${encodeURIComponent(messageText)}`;
+        }
+      }
+    }
+
     await client.emails.send({
       from,
       to: 'creandovalor.ia@gmail.com',
       replyTo: 'arturo.barrios@bios.creatuimagen.online',
-      subject: `${emoji} ${title} - ${toAddresses.join(', ')}`,
+      subject: `${emoji} ${title} - ${clientName} (${toAddresses.join(', ')})`,
       html: `
-        <div style="font-family: sans-serif; padding: 20px; color: #333;">
-          <h2 style="color: ${color};">${emoji} ${title}</h2>
-          <p style="background-color: ${bgColor}; border-left: 4px solid ${borderColor}; padding: 12px; border-radius: 8px; color: ${textColor}; font-weight: bold;">
-            El siguiente correo <b>${isComplaint ? 'fue marcado como SPAM' : 'NO pudo entregarse (REBOTE)'}</b> por el servidor destinatario.
+        <div style="font-family: sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #f1f5f9; border-radius: 16px;">
+          <h2 style="color: ${color}; margin-top: 0;">${emoji} ${title}</h2>
+          
+          <p style="background-color: ${bgColor}; border-left: 4px solid ${borderColor}; padding: 14px; border-radius: 10px; color: ${textColor}; font-weight: bold; font-size: 14px; margin-bottom: 20px;">
+            El correo enviado a <b>${clientName}</b> (${toAddresses.join(', ')}) <b>${isComplaint ? 'fue marcado como SPAM' : 'NO pudo entregarse (REBOTE)'}</b> por el servidor destinatario.
           </p>
-          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-          <p><b>Correo destinatario:</b> ${toAddresses.join(', ')}</p>
-          <p><b>Asunto del correo fallido:</b> ${subject}</p>
-          <p><b>Tipo de rebote:</b> ${bounceType}</p>
-          <p><b>ID de Resend:</b> <code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 12px;">${emailId}</code></p>
-          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-          <p style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 8px; color: #92400e; font-size: 13px;">
-            ⚠️ <b>Acción requerida:</b> El cliente <b>${toAddresses.join(', ')}</b> NO recibió sus credenciales de acceso. 
-            Contáctalo por WhatsApp o correo alternativo para entregarle acceso manualmente.
-          </p>
-          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-          <p style="font-size: 10px; color: #999;">Alerta automática del sistema de monitoreo de Crea Tu Imagen Online</p>
+
+          <div style="background-color: #f8fafc; padding: 15px; border-radius: 12px; font-size: 13px; line-height: 1.6; margin-bottom: 20px; color: #475569;">
+            <h3 style="margin-top: 0; color: #1e293b; font-size: 14px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">📋 Datos del Cliente y Envío</h3>
+            <div style="margin-bottom: 6px;"><b>👤 Cliente:</b> ${clientName}</div>
+            <div style="margin-bottom: 6px;"><b>🔗 Enlace del perfil:</b> ${clientSlug ? `<a href="https://bios.creatuimagen.online/${clientSlug}" target="_blank" style="color: #2563eb; text-decoration: underline; font-weight: bold;">/${clientSlug}</a>` : 'No asignado'}</div>
+            <div style="margin-bottom: 6px;"><b>📧 Correo Destinatario:</b> ${toAddresses.join(', ')}</div>
+            <div style="margin-bottom: 6px;"><b>📝 Asunto del Correo Fallido:</b> ${subject}</div>
+            <div style="margin-bottom: 6px;"><b>⚠️ Tipo de Rebote:</b> ${bounceType}</div>
+            <div><b>🆔 ID de Resend:</b> <code style="background: #e2e8f0; padding: 2px 6px; border-radius: 4px; font-size: 11px;">${emailId}</code></div>
+          </div>
+
+          <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px; border-radius: 12px; color: #92400e; font-size: 13px; line-height: 1.5; margin-bottom: 20px;">
+            <p style="margin-top: 0; font-weight: bold; font-size: 14px;">⚠️ Acción Requerida</p>
+            El cliente **${clientName}** no ha recibido sus accesos debido a este rebote. 
+            Como administrador, puedes contactarlo de inmediato para guiarlo o entregarle sus credenciales manualmente.
+
+            ${waLink ? `
+              <div style="margin-top: 15px; text-align: center;">
+                <a href="${waLink}" target="_blank" style="display: inline-block; background-color: #25d366; color: white; padding: 12px 24px; border-radius: 10px; font-weight: bold; text-decoration: none; font-size: 14px; box-shadow: 0 4px 6px rgba(37, 211, 102, 0.2);">
+                  💬 Contactar por WhatsApp (${clientWhatsApp})
+                </a>
+              </div>
+            ` : `
+              <p style="margin-bottom: 0; font-style: italic; color: #b45309; font-size: 12px; margin-top: 8px;">
+                ⚠️ Nota: No hay número de WhatsApp registrado para este perfil en la base de datos.
+              </p>
+            `}
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid #f1f5f9; margin: 20px 0;">
+          <p style="font-size: 10px; color: #94a3b8; text-align: center; margin-bottom: 0;">Alerta automática del sistema de monitoreo · Crea Tu Imagen Online</p>
         </div>
       `,
     });
