@@ -148,7 +148,11 @@ export async function sendAdminNotification({
         finalWhatsApp = clean; // Asumimos que ya tiene código
       }
     }
-    const waLink = finalWhatsApp ? `https://wa.me/${finalWhatsApp}` : null;
+    
+    // Generar un mensaje de bienvenida personalizado para que el admin contacte al cliente al instante
+    const waText = `¡Hola ${nombre}! Te saludo de Crea Tu Imagen Online. Acabo de confirmar tu pago exitoso por tu Bio Digital Profesional (https://bios.creatuimagen.online/${slug}). ¡Muchas gracias por tu confianza! ¿Te gustaría que te apoye en el proceso de configuración?`;
+    const waEncoded = encodeURIComponent(waText);
+    const waLink = finalWhatsApp ? `https://wa.me/${finalWhatsApp}?text=${waEncoded}` : null;
     
     await client.emails.send({
       from: from,
