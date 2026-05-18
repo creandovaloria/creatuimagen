@@ -511,6 +511,22 @@ Esto garantiza que Next.js compile y procese la página en tiempo de ejecución 
    * Proporciona un botón destacado de **Cerrar Sesión** en color de alerta (que borra la sesión de la otra cuenta con un clic) junto a un botón de retorno a su panel.
 **Beneficio:** Evita fricción en el onboarding, elimina falsos reportes de links rotos, y empodera al usuario final para autodiagnosticar y solucionar conflictos de sesión al instante de forma autónoma.
 
+### Error 29 — Bucle de Redirecciones en Sandbox de Mercado Pago y su Evasión en Producción
+**Síntoma:** Al redireccionar al cliente al checkout de pruebas (`sandbox_init_point` en el subdominio `sandbox.mercadopago.com.mx`), el navegador se quedaba atrapado en un ciclo de carga infinito arrojando un error `ERR_TOO_MANY_REDIRECTS` en la pantalla de inicio de sesión de prueba.
+**Causa:**
+El subdominio de Sandbox de Mercado Pago en México y Latinoamérica sufre de graves inconsistencias en su manejo de sesiones y desafíos de seguridad (`/challenge`), lo que ocasiona que al intentar autenticar un *Usuario de Prueba Comprador* se genere un bucle infinito de cookies del lado del servidor de Mercado Pago.
+**Solución:**
+En lugar de forzar la URL de Sandbox, utilizar la URL estándar de Producción (**`init_point`** que corre bajo el dominio principal estable `www.mercadopago.com.mx`).
+* **Cómo opera:** Cuando el cliente inicia sesión en `www.mercadopago.com.mx` usando las credenciales de su **Usuario de Prueba Comprador** (el correo ficticio `test_user_...`), los servidores reales de Mercado Pago detectan en caliente el tipo de cuenta y transforman la pasarela al modo Sandbox de forma segura y libre de bucles. Esto permite pagar con saldo de pruebas o tarjetas simuladas de forma robusta.
+
+### Decisión 30 — Detector Interactivo y Bloqueo Estricto de Typos en Emails de Registro
+**Problema:** Un cliente puede cometer un error tipográfico involuntario al escribir su correo durante el registro (ej. `@gmai.com` en lugar de `@gmail.com`). Dado que el sistema crea el usuario de acceso y el perfil usando este correo, si tiene un typo las credenciales de acceso se enviarán a un buzón inexistente, dejando al cliente sin acceso a su panel y generando fricción de soporte inmediata.
+**Solución:**
+Implementar una estrategia de prevención en dos niveles directamente en el frontend (`app/registro/page.tsx`):
+1. **Detección y sugerencia interactiva en tiempo real:** A medida que el usuario escribe, el formulario analiza el dominio. Si detecta un error común (`gmai.com`, `gamil.com`, `hotmai.com`, `outloo.com`, etc.), muestra una tarjeta ámbar interactiva muy premium: *“¿Quisiste decir [correo_correcto]? Haz clic para corregir”*, la cual repara el typo con un solo clic.
+2. **Bloqueo físico absoluto en el submit:** Si el usuario ignora la advertencia e intenta presionar el botón de pago con un dominio inválido conocido, la función `handleSubmit` congela el envío, bloquea el paso al checkout y lanza una alerta explicativa obligándolo a corregir el correo.
+3. **Respaldo visual en la Notificación Admin:** En el correo automático de notificación de venta al administrador, se incluyó una caja verde destacada mostrando exactamente a qué email se enviaron los accesos automáticos, permitiendo una rápida auditoría visual del correo y facilitando el contacto vía WhatsApp en caso de cualquier inconveniente.
+
 ---
 © 2026 Creando Valor IA
 
