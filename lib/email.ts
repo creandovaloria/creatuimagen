@@ -29,11 +29,12 @@ interface WelcomeEmailProps {
   slug: string;
   email: string;
   monto?: number;
+  contrasena?: string;
   whatsapp?: string;
   unit?: BusinessUnit;
 }
 
-export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, unit = 'BIOS' }: WelcomeEmailProps) {
+export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, contrasena, unit = 'BIOS' }: WelcomeEmailProps) {
   try {
     const { client, from } = getResendClient(unit);
     
@@ -77,8 +78,9 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, unit 
           <div style="background: #fffbeb; padding: 20px; border-radius: 16px; border: 1px solid #fef3c7; margin-bottom: 30px;">
             <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #92400e;">🔑 Acceso a tu Panel de Edición:</p>
             <p style="margin: 0; font-size: 14px; color: #b45309;"><b>Usuario:</b> ${email}</p>
+            ${contrasena ? `<p style="margin: 5px 0 0 0; font-size: 14px; color: #b45309;"><b>Contraseña Temporal:</b> ${contrasena}</p>` : ''}
             <p style="margin: 10px 0 0 0; font-size: 13px; color: #d97706; line-height: 1.4;">
-              <i><b>IMPORTANTE:</b> Te acabamos de enviar un segundo correo titulado "Confirm your signup" o "You have been invited". Ábrelo para crear tu contraseña personal y empezar a editar tu Bio.</i>
+              <i><b>NOTA:</b> Esta es una contraseña inicial temporal. Puedes ingresar de inmediato y cambiarla en tu perfil, o restablecerla con tu correo desde la pantalla de inicio de sesión si lo requieres.</i>
             </p>
           </div>
 
@@ -102,6 +104,7 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, unit 
         </div>
       `,
     });
+
 
     return { success: true, data };
   } catch (error) {

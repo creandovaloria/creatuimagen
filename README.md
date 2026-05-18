@@ -27,6 +27,8 @@ Plataforma SaaS Multi-tenant para la gestión de perfiles digitales (`bios`) e i
 
 ## 🔐 Seguridad y Auth
 - Las contraseñas de administrador deben ser gestionadas cuidadosamente.
+- **Onboarding Automático:** Al registrarse vía pago, se crea automáticamente un usuario en Supabase Auth con una contraseña temporal auto-confirmada (ej: `Crea*XXXXXX`). Esta clave se entrega directamente en el email de bienvenida del cliente de forma transparente y sin correos genéricos del sistema.
+- El cliente final puede iniciar sesión inmediatamente con su correo y contraseña temporal, y posteriormente cambiarla en su panel de administración o solicitar restablecimiento vía correo.
 - **IMPORTANTE:** No crear usuarios con correos inexistentes para evitar bloqueos de Supabase por rebotes de email.
 
 ## 📊 Centro de Ventas & CRM

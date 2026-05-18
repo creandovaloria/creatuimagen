@@ -23,6 +23,7 @@ El sistema utiliza un **Middleware de Next.js** para interceptar peticiones y se
 3. **Analíticas Internas:** Contador de visitas real-time y detección de origen (Referer Tracking) para medir tráfico de IG, FB, WA.
 4. **UX Internacional:** Registro con selector de banderas y normalización automática de números globales.
 5. **Automatización de Webhooks:** Integración con Mercado Pago que activa CRM + Emails + Perfiles en un solo flujo.
+6. **Onboarding Sin Fricción:** Creación automática de usuarios en Supabase Auth con contraseña temporal auto-confirmada entregada directamente en el correo de bienvenida unificado (Resend), eliminando correos de sistema confusos y ajenos.
 
 ---
 

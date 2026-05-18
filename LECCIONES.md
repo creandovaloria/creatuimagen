@@ -445,5 +445,15 @@ export const dynamic = 'force-dynamic';
 **Mejora Internacional:** Implementar lógica que detecta si el número ya tiene código de país (empieza con `+`) o si debe asumir el `52` de México.
 
 ---
+
+### Decisión 27 — Contraseñas Temporales Automáticas y Onboarding Sin Fricción
+**Problema:** Enviar el correo de invitación por defecto de Supabase Auth ("You have been invited") confunde a los usuarios finales debido a que proviene de un remitente desconocido, usa links genéricos y se siente desligado de la experiencia de compra de "Crea Tu Imagen".
+**Solución:**
+1. Crear el usuario en Supabase Auth directamente usando `supabase.auth.admin.createUser` con una contraseña temporal legible pero segura (ej: `Crea*XXXXXX`).
+2. Configurar `email_confirm: true` para que la cuenta se active y confirme al instante.
+3. Entregar la contraseña temporal directamente en el correo de bienvenida premium (Resend), eliminando correos adicionales de sistema.
+**Beneficio:** Experiencia de onboarding ultra-limpia, 100% personalizada bajo la marca del SaaS. Permite acceso instantáneo al panel de edición y el usuario mantiene la facultad de cambiar la contraseña en su panel de perfil o solicitar restablecimiento vía email convencional.
+
+---
 © 2026 Creando Valor IA
 

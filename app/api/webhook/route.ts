@@ -64,15 +64,34 @@ export async function POST(request: Request) {
             console.error('❌ Error gestionando cliente en CRM:', clienteError);
           }
 
-          // 2. CREAR USUARIO EN AUTH (Invitación)
-          // Esto envía un correo automático de Supabase para que el usuario ponga su contraseña
-          const { data: authUser, error: authError } = await supabase.auth.admin.inviteUserByEmail(email, {
-            data: { nombre, slug, role: 'cliente' },
-            redirectTo: `https://bios.creatuimagen.online/admin/perfiles/${slug}`
+          // 2. CREAR USUARIO EN AUTH (Contraseña Temporal Auto-confirmada)
+          const tempPassword = `Crea*${Math.random().toString(36).slice(-6).toUpperCase()}`;
+          let authUser = null;
+          let isNewUser = true;
+
+          const { data: createData, error: authError } = await supabase.auth.admin.createUser({
+            email,
+            password: tempPassword,
+            email_confirm: true,
+            user_metadata: { nombre, slug, role: 'cliente' }
           });
 
           if (authError) {
-            console.error('⚠️ Error invitando usuario (posiblemente ya existe):', authError.message);
+            if (authError.message.includes('already exists') || authError.status === 422) {
+              console.log('ℹ️ El usuario ya existe en Auth, intentando vincular perfil existente...');
+              isNewUser = false;
+              const { data: listUsers, error: listError } = await supabase.auth.admin.listUsers();
+              if (!listError) {
+                const existingUser = listUsers.users.find(u => u.email?.toLowerCase() === email.toLowerCase());
+                if (existingUser) {
+                  authUser = { user: existingUser };
+                }
+              }
+            } else {
+              console.error('⚠️ Error creando usuario en Auth:', authError.message);
+            }
+          } else {
+            authUser = createData;
           }
 
           // 3. Crear el perfil en Supabase (VINCULADO AL CLIENTE Y AL AUTH USER)
@@ -119,6 +138,7 @@ export async function POST(request: Request) {
             slug, 
             email, 
             monto: paymentData.transaction_amount || 950,
+            contrasena: isNewUser ? tempPassword : undefined,
             unit: 'BIOS' 
           });
           await sendAdminNotification({ nombre, slug, email, whatsapp, unit: 'BIOS' });
