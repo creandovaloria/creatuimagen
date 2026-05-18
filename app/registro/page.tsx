@@ -6,12 +6,41 @@ import { useRouter } from 'next/navigation';
 export default function RegistroPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [emailSuggestion, setEmailSuggestion] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
     whatsapp: '',
     slug: ''
   });
+
+  const handleEmailChange = (val: string) => {
+    setFormData({ ...formData, email: val });
+    
+    const parts = val.split('@');
+    if (parts.length === 2) {
+      const domain = parts[1].toLowerCase().trim();
+      const commonTypos: { [key: string]: string } = {
+        'gmai.com': 'gmail.com',
+        'gamil.com': 'gmail.com',
+        'gmial.com': 'gmail.com',
+        'gmaill.com': 'gmail.com',
+        'gml.com': 'gmail.com',
+        'hotmai.com': 'hotmail.com',
+        'hotmial.com': 'hotmail.com',
+        'hormail.com': 'hotmail.com',
+        'outloo.com': 'outlook.com',
+        'yaho.com': 'yahoo.com'
+      };
+      if (commonTypos[domain]) {
+        setEmailSuggestion(`${parts[0]}@${commonTypos[domain]}`);
+      } else {
+        setEmailSuggestion(null);
+      }
+    } else {
+      setEmailSuggestion(null);
+    }
+  };
 
   const handleNombreChange = (val: string) => {
     const slug = val.toLowerCase()
@@ -42,7 +71,6 @@ export default function RegistroPage() {
           whatsapp: `+${fullWhatsapp}`
         })
       });
-// ... rest of code
 
       const data = await res.json();
       if (data.url) {
@@ -98,8 +126,29 @@ export default function RegistroPage() {
               required
               className="w-full px-6 py-4 bg-slate-50 border-2 border-transparent rounded-2xl focus:bg-white focus:border-blue-100 transition-all outline-none text-slate-800 font-bold"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) => handleEmailChange(e.target.value)}
             />
+            {emailSuggestion && (
+              <div className="mt-2 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col space-y-2 transition-all">
+                <div className="flex items-start space-x-2">
+                  <span className="text-amber-500 text-lg leading-none mt-0.5">⚠️</span>
+                  <div className="text-xs text-amber-800 font-bold leading-relaxed">
+                    ¿Quisiste decir <span className="text-amber-950 underline decoration-amber-400 font-black">{emailSuggestion}</span>? 
+                    Por favor verifica para asegurar el envío de tus accesos.
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({ ...formData, email: emailSuggestion });
+                    setEmailSuggestion(null);
+                  }}
+                  className="self-end px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-black rounded-lg transition-colors cursor-pointer"
+                >
+                  Sí, corregir correo
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Campo: WhatsApp Dividido con Selector de País */}
