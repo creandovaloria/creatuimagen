@@ -241,3 +241,61 @@ export async function sendAbandonmentNotification({ nombre, slug, email, whatsap
     console.error('Error enviando notificación de abandono:', error);
   }
 }
+
+/**
+ * Alerta al administrador cuando Resend detecta un rebote (bounce) o queja de spam.
+ * Se invoca desde el endpoint /api/resend-webhook.
+ */
+export async function sendAdminBounceAlert({
+  toAddresses,
+  subject,
+  emailId,
+  bounceType,
+  eventType,
+}: {
+  toAddresses: string[];
+  subject: string;
+  emailId: string;
+  bounceType: string;
+  eventType: string;
+}) {
+  try {
+    const { client, from } = getResendClient('BIOS');
+    const isComplaint = eventType === 'email.complained';
+    const emoji = isComplaint ? '🚫' : '📧';
+    const title = isComplaint ? 'Queja de Spam Detectada' : 'Rebote de Correo Detectado';
+    const color = '#ef4444';
+    const bgColor = '#fef2f2';
+    const borderColor = '#ef4444';
+    const textColor = '#991b1b';
+
+    await client.emails.send({
+      from,
+      to: 'creandovalor.ia@gmail.com',
+      replyTo: 'arturo.barrios@bios.creatuimagen.online',
+      subject: `${emoji} ${title} - ${toAddresses.join(', ')}`,
+      html: `
+        <div style="font-family: sans-serif; padding: 20px; color: #333;">
+          <h2 style="color: ${color};">${emoji} ${title}</h2>
+          <p style="background-color: ${bgColor}; border-left: 4px solid ${borderColor}; padding: 12px; border-radius: 8px; color: ${textColor}; font-weight: bold;">
+            El siguiente correo <b>${isComplaint ? 'fue marcado como SPAM' : 'NO pudo entregarse (REBOTE)'}</b> por el servidor destinatario.
+          </p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+          <p><b>Correo destinatario:</b> ${toAddresses.join(', ')}</p>
+          <p><b>Asunto del correo fallido:</b> ${subject}</p>
+          <p><b>Tipo de rebote:</b> ${bounceType}</p>
+          <p><b>ID de Resend:</b> <code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 12px;">${emailId}</code></p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 8px; color: #92400e; font-size: 13px;">
+            ⚠️ <b>Acción requerida:</b> El cliente <b>${toAddresses.join(', ')}</b> NO recibió sus credenciales de acceso. 
+            Contáctalo por WhatsApp o correo alternativo para entregarle acceso manualmente.
+          </p>
+          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+          <p style="font-size: 10px; color: #999;">Alerta automática del sistema de monitoreo de Crea Tu Imagen Online</p>
+        </div>
+      `,
+    });
+  } catch (error) {
+    console.error('Error enviando alerta de rebote al admin:', error);
+  }
+}
