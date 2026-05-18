@@ -6,6 +6,8 @@ import ProfileForm from '@/components/admin/ProfileForm'
 import LinksManager from '@/components/admin/LinksManager'
 import SignOutButton from '@/components/admin/SignOutButton'
 
+export const dynamic = 'force-dynamic'
+
 export default async function EditProfilePage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params
   const supabase = await createClient()
