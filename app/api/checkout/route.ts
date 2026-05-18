@@ -50,13 +50,15 @@ export async function POST(request: Request) {
       }
     });
 
-    // Determinar si usar sandbox_init_point o init_point
-    // Se usa sandbox_init_point si la variable MP_SANDBOX_MODE es 'true' o si el token empieza con 'TEST-'
-    const useSandbox = process.env.MP_SANDBOX_MODE === 'true' || 
-                       process.env.MP_BIOS_ACCESS_TOKEN?.startsWith('TEST-') || 
-                       process.env.MP_ACCESS_TOKEN?.startsWith('TEST-');
+    // Determinar si usar sandbox_init_point o init_point.
+    // NOTA: Mercado Pago ya no diferencia credenciales de prueba con el prefijo TEST-.
+    // Ambas (prueba y producción) usan APP_USR-... La única forma confiable de
+    // activar el sandbox es mediante la variable de entorno MP_SANDBOX_MODE=true.
+    const useSandbox = process.env.MP_SANDBOX_MODE === 'true';
     
-    const checkoutUrl = useSandbox ? (result.sandbox_init_point || result.init_point) : result.init_point;
+    const checkoutUrl = useSandbox 
+      ? (result.sandbox_init_point || result.init_point) 
+      : result.init_point;
 
     return NextResponse.json({ id: result.id, url: checkoutUrl });
   } catch (error: any) {
