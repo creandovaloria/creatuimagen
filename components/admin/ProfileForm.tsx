@@ -109,7 +109,7 @@ export default function ProfileForm({ profile, isAdmin = false }: ProfileFormPro
       youtube: formData.youtube,
        whatsapp: formData.whatsapp,
       usa_colores_tema: formData.usa_colores_tema,
-      custom_domain: formData.custom_domain,
+      custom_domain: formData.custom_domain ? formData.custom_domain.trim() : null,
       user_id: formData.user_id || null,
     }
 
