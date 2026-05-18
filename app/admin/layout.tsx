@@ -15,15 +15,26 @@ export default async function AdminLayout({
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-slate-200 flex flex-col hidden md:flex">
         <div className="h-16 flex items-center px-6 border-b border-slate-200">
-          <span className="font-bold text-xl text-slate-800">Admin Panel</span>
+          <span className="font-bold text-lg text-slate-800">
+            {user?.email === 'creandovalor.ia@gmail.com' ? 'Panel de Control' : 'Mi Cuenta'}
+          </span>
         </div>
         <nav className="flex-1 py-4 px-3 space-y-1">
-          <Link 
-            href="/admin" 
-            className="flex items-center px-3 py-2 text-sm font-medium rounded-md bg-indigo-50 text-indigo-700"
-          >
-            📊 Dashboard
-          </Link>
+          {user?.email === 'creandovalor.ia@gmail.com' ? (
+            <Link 
+              href="/admin" 
+              className="flex items-center px-3 py-2 text-sm font-black rounded-md bg-indigo-50 text-indigo-700"
+            >
+              📊 Centro de Comando
+            </Link>
+          ) : (
+            <Link 
+              href="/admin" 
+              className="flex items-center px-3 py-2 text-sm font-black rounded-md bg-indigo-50 text-indigo-700"
+            >
+              📱 Mis Bios Digitales
+            </Link>
+          )}
           {user?.email === 'creandovalor.ia@gmail.com' && (
             <div className="pt-4 mt-4 border-t border-slate-100">
               <span className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Negocio & CRM</span>

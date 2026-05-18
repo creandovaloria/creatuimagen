@@ -1,20 +1,107 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminDashboard() {
   const supabase = await createClient()
   
-  // Consultamos todo lo necesario para el Centro de Comando
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) {
+    redirect('/login')
+  }
+
+  // 1. Obtener perfiles del usuario (RLS los filtrará automáticamente si es un cliente normal)
   const { data: perfiles } = await supabase.from('perfiles').select('*').order('created_at', { ascending: false })
-  
-  // Datos del CRM
+
+  // 2. Si NO es el administrador de la plataforma, le damos la experiencia limpia de cliente
+  if (user.email !== 'creandovalor.ia@gmail.com') {
+    // Si tiene exactamente 1 perfil, lo redirigimos directo a su panel de edición para cero fricción
+    if (perfiles && perfiles.length === 1) {
+      redirect(`/admin/perfiles/${perfiles[0].slug}`)
+    }
+
+    const misPerfiles = perfiles || []
+
+    return (
+      <div className="space-y-8 max-w-4xl mx-auto mt-6">
+        <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-950 p-8 rounded-[2.5rem] text-white shadow-xl shadow-indigo-900/10 relative overflow-hidden">
+          <div className="absolute right-0 bottom-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-2xl"></div>
+          <div className="relative">
+            <span className="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">
+              Panel del Cliente
+            </span>
+            <h2 className="text-3xl font-black mt-3">¡Hola, {user.user_metadata?.nombre || user.email?.split('@')[0]}!</h2>
+            <p className="text-slate-300 text-sm mt-2 max-w-md">Desde este panel puedes actualizar tus Bios, administrar tus enlaces de contacto y cambiar el diseño en tiempo real.</p>
+          </div>
+        </div>
+
+        <section className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h3 className="text-xl font-black text-slate-900 tracking-tight">Mis Tarjetas & Bios</h3>
+          </div>
+
+          {misPerfiles.length === 0 ? (
+            <div className="bg-white p-12 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 text-center space-y-4">
+              <div className="w-16 h-16 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center mx-auto text-2xl">
+                📭
+              </div>
+              <h4 className="text-lg font-black text-slate-800">Aún no tienes Bios contratadas</h4>
+              <p className="text-slate-500 text-xs max-w-md mx-auto">Si acabas de realizar tu pago, el sistema puede tardar un minuto en procesar tu orden. Si experimentas demoras, por favor contáctanos por soporte.</p>
+              <a 
+                href="https://wa.me/525555027042?text=Hola,%20acabo%20de%20comprar%20mi%20Bio%20y%20necesito%20soporte"
+                target="_blank"
+                className="inline-block bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm px-6 py-3 rounded-2xl transition-all"
+              >
+                💬 Contactar Soporte Técnico
+              </a>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {misPerfiles.map((perfil) => (
+                <div key={perfil.id} className="bg-white p-6 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/30 hover:shadow-2xl hover:shadow-slate-200/50 transition-all relative overflow-hidden group">
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 flex-shrink-0">
+                      <img src={perfil.foto_url || ''} className="w-full h-full object-cover" alt="" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-black text-lg text-slate-900 truncate group-hover:text-blue-600 transition-colors">{perfil.nombre}</h4>
+                      <p className="text-xs font-bold text-slate-400">/{perfil.slug}</p>
+                    </div>
+                  </div>
+                  <div className="mt-6 flex gap-4">
+                    <Link 
+                      href={`/admin/perfiles/${perfil.slug}`}
+                      className="flex-1 bg-slate-950 hover:bg-slate-800 text-white font-black text-center text-xs py-3.5 rounded-2xl transition-all shadow-md"
+                    >
+                      Editar Contenido
+                    </Link>
+                    <a 
+                      href={`/${perfil.slug}`}
+                      target="_blank"
+                      className="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-100 font-black text-center text-xs py-3.5 rounded-2xl transition-all"
+                    >
+                      Ver en vivo ↗
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
+    )
+  }
+
+  // 3. SI ES EL ADMINISTRADOR DE LA PLATAFORMA (creandovalor.ia@gmail.com):
+  // Datos del CRM con privilegios elevados (o los del admin que ve todo)
   const { data: ventas } = await supabase.schema('crm').from('ventas').select('monto, fecha, id, producto').order('fecha', { ascending: false })
   const { count: totalClientes } = await supabase.schema('crm').from('clientes').select('*', { count: 'exact', head: true })
 
   const ingresosTotales = ventas?.reduce((acc, v) => acc + Number(v.monto), 0) || 0;
   const ventasRecientes = ventas?.slice(0, 5) || [];
+
 
   return (
     <div className="space-y-12">
