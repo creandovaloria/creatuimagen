@@ -140,9 +140,12 @@ export async function sendAdminNotification({ nombre, slug, email, whatsapp, uni
           <h2 style="color: #059669;">¡Nueva Venta Confirmada! 💰</h2>
           <p><b>Producto:</b> Bio Digital (${unit})</p>
           <p><b>Cliente:</b> ${nombre}</p>
-          <p><b>Email:</b> ${email}</p>
+          <p><b>Email del Cliente:</b> ${email}</p>
           <p><b>WhatsApp:</b> ${whatsapp || 'No proporcionado'}</p>
           <p><b>URL Reservada:</b> bios.creatuimagen.online/${slug}</p>
+          <p style="background-color: #f0fdf4; border-left: 4px solid #10b981; padding: 10px; font-size: 13px; color: #065f46; font-weight: bold; margin-top: 15px;">
+            📧 Correo de bienvenida enviado automáticamente a: <a href="mailto:${email}" style="color: #047857; text-decoration: underline;">${email}</a>
+          </p>
           
           ${waLink ? `
             <a href="${waLink}" style="display: inline-block; background: #25d366; color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: bold; margin-top: 10px;">
