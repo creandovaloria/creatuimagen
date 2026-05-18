@@ -293,7 +293,7 @@ export async function sendAdminBounceAlert({
         if (clientWhatsApp) {
           const cleanNum = clientWhatsApp.replace(/\D/g, '');
           const finalNum = cleanNum.startsWith('52') ? cleanNum : `52${cleanNum}`;
-          const messageText = `Hola ${clientName}, notamos un inconveniente con el correo electrónico registrado para tu Bio digital de Crea Tu Imagen. Queremos ayudarte a configurarlo de inmediato.`;
+          const messageText = `Hola ${clientName}, notamos un inconveniente con el correo electrónico (${emailToLookup}) registrado para tu Bio digital de Crea Tu Imagen. Queremos ayudarte a configurarlo de inmediato.`;
           waLink = `https://wa.me/${finalNum}?text=${encodeURIComponent(messageText)}`;
         }
       }
