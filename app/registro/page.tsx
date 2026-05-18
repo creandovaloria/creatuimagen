@@ -57,6 +57,21 @@ export default function RegistroPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
+
+    // 🛡️ VALIDACIÓN AUTOMÁTICA Y ESTRICTA DE TYPOS EN EMAIL
+    const parts = formData.email.split('@');
+    if (parts.length === 2) {
+      const domain = parts[1].toLowerCase().trim();
+      const invalidDomains = [
+        'gmai.com', 'gamil.com', 'gmial.com', 'gmaill.com', 'gml.com',
+        'hotmai.com', 'hotmial.com', 'hormail.com',
+        'outloo.com', 'yaho.com', 'yahoo.co'
+      ];
+      if (invalidDomains.includes(domain)) {
+        alert(`⚠️ El dominio "@${domain}" es incorrecto o tiene un error de dedo.\n\nPor favor, corrígelo (ej. usando el botón "Sí, corregir correo" en pantalla) antes de proceder al pago para garantizar que recibas tus credenciales de acceso.`);
+        return;
+      }
+    }
     
     setLoading(true);
 
