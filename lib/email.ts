@@ -42,7 +42,7 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, contr
     const waText = `¡Hola! Soy ${nombre}. Acabo de adquirir mi Bio Digital Profesional por $${monto} MXN (Estado: Completado ✅) y necesito soporte para la configuración. Mi link reservado es: bios.creatuimagen.online/${slug}`;
     const waEncoded = encodeURIComponent(waText);
     
-    const data = await client.emails.send({
+    const result = await client.emails.send({
       from: from, 
       to: email,
       replyTo: 'arturo.barrios@bios.creatuimagen.online',
@@ -106,15 +106,35 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, contr
       `,
     });
 
+    if (result.error) {
+      console.error('Error de la API de Resend:', result.error);
+      return { success: false, error: result.error.message || JSON.stringify(result.error) };
+    }
 
-    return { success: true, data };
-  } catch (error) {
+    return { success: true, data: result.data };
+  } catch (error: any) {
     console.error('Error enviando email de bienvenida:', error);
-    return { success: false, error };
+    return { success: false, error: error?.message || String(error) };
   }
 }
 
-export async function sendAdminNotification({ nombre, slug, email, whatsapp, unit = 'BIOS' }: { nombre: string, slug: string, email: string, whatsapp?: string, unit?: BusinessUnit }) {
+export async function sendAdminNotification({ 
+  nombre, 
+  slug, 
+  email, 
+  whatsapp, 
+  unit = 'BIOS',
+  emailEnviado = true,
+  emailError = null
+}: { 
+  nombre: string, 
+  slug: string, 
+  email: string, 
+  whatsapp?: string, 
+  unit?: BusinessUnit,
+  emailEnviado?: boolean,
+  emailError?: string | null
+}) {
   try {
     const { client, from } = getResendClient(unit);
     let finalWhatsApp = null;
@@ -143,9 +163,16 @@ export async function sendAdminNotification({ nombre, slug, email, whatsapp, uni
           <p><b>Email del Cliente:</b> ${email}</p>
           <p><b>WhatsApp:</b> ${whatsapp || 'No proporcionado'}</p>
           <p><b>URL Reservada:</b> bios.creatuimagen.online/${slug}</p>
-          <p style="background-color: #f0fdf4; border-left: 4px solid #10b981; padding: 10px; font-size: 13px; color: #065f46; font-weight: bold; margin-top: 15px;">
-            📧 Correo de bienvenida enviado automáticamente a: <a href="mailto:${email}" style="color: #047857; text-decoration: underline;">${email}</a>
-          </p>
+          
+          ${emailEnviado 
+            ? `<p style="background-color: #f0fdf4; border-left: 4px solid #10b981; padding: 12px; font-size: 13px; color: #065f46; font-weight: bold; margin-top: 15px; border-radius: 8px;">
+                📧 Correo de bienvenida enviado automáticamente a: <a href="mailto:${email}" style="color: #047857; text-decoration: underline;">${email}</a>
+               </p>`
+            : `<p style="background-color: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; font-size: 13px; color: #991b1b; font-weight: bold; margin-top: 15px; border-radius: 8px;">
+                ❌ ERROR DE RESEND: No se pudo enviar el correo de bienvenida.<br>
+                <span style="font-size: 11px; font-family: monospace; font-weight: normal; color: #7f1d1d;">Detalle: ${emailError || 'Formato de correo incorrecto o problema en la API de Resend.'}</span>
+               </p>`
+          }
           
           ${waLink ? `
             <a href="${waLink}" style="display: inline-block; background: #25d366; color: white; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: bold; margin-top: 10px;">

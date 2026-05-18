@@ -133,7 +133,7 @@ export async function POST(request: Request) {
           }
 
           // 4. Enviar Emails
-          await sendWelcomeEmail({ 
+          const emailResult = await sendWelcomeEmail({ 
             nombre, 
             slug, 
             email, 
@@ -141,7 +141,15 @@ export async function POST(request: Request) {
             contrasena: isNewUser ? tempPassword : undefined,
             unit: 'BIOS' 
           });
-          await sendAdminNotification({ nombre, slug, email, whatsapp, unit: 'BIOS' });
+          await sendAdminNotification({ 
+            nombre, 
+            slug, 
+            email, 
+            whatsapp, 
+            unit: 'BIOS',
+            emailEnviado: emailResult.success,
+            emailError: emailResult.success ? null : (emailResult.error as string || 'Error de entrega en Resend.')
+          });
 
           console.log(`✅ Perfil ${slug} y Venta registrados con éxito.`);
         }
