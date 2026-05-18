@@ -5,6 +5,7 @@ import Link from 'next/link'
 import ProfileForm from '@/components/admin/ProfileForm'
 import LinksManager from '@/components/admin/LinksManager'
 import SignOutButton from '@/components/admin/SignOutButton'
+import EmailManagementPanel from '@/components/admin/EmailManagementPanel'
 
 export const dynamic = 'force-dynamic'
 
@@ -119,6 +120,15 @@ export default async function EditProfilePage({ params }: { params: Promise<{ sl
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <ProfileForm profile={fullProfile} />
         </div>
+
+        {/* Admin Only: Email Management Panel */}
+        {isAdmin && (
+          <EmailManagementPanel
+            slug={profile.slug}
+            currentEmail={profile.email || ''}
+            profileName={profile.nombre}
+          />
+        )}
 
         {/* Bottom: Dynamic Links */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
