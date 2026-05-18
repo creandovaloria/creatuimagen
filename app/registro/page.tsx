@@ -58,19 +58,36 @@ export default function RegistroPage() {
     e.preventDefault();
     if (loading) return;
 
-    // 🛡️ VALIDACIÓN AUTOMÁTICA Y ESTRICTA DE TYPOS EN EMAIL
-    const parts = formData.email.split('@');
-    if (parts.length === 2) {
-      const domain = parts[1].toLowerCase().trim();
-      const invalidDomains = [
-        'gmai.com', 'gamil.com', 'gmial.com', 'gmaill.com', 'gml.com',
-        'hotmai.com', 'hotmial.com', 'hormail.com',
-        'outloo.com', 'yaho.com', 'yahoo.co'
-      ];
-      if (invalidDomains.includes(domain)) {
-        alert(`⚠️ El dominio "@${domain}" es incorrecto o tiene un error de dedo.\n\nPor favor, corrígelo (ej. usando el botón "Sí, corregir correo" en pantalla) antes de proceder al pago para garantizar que recibas tus credenciales de acceso.`);
-        return;
-      }
+    // 🛡️ VALIDACIÓN AUTOMÁTICA Y ESTRICTA DE CORREO (TRES NIVELES)
+    const emailVal = formData.email.trim();
+    const parts = emailVal.split('@');
+    
+    // Nivel 1: Validar formato básico estricto con Regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRegex.test(emailVal) || parts.length !== 2) {
+      alert("⚠️ Por favor escribe un correo electrónico válido (ej. nombre@correo.com).\n\nAsegúrate de incluir el '@' y una extensión de dominio válida (como .com, .mx, etc.).");
+      return;
+    }
+
+    const domain = parts[1].toLowerCase().trim();
+    
+    // Nivel 2: Validar que el dominio tenga un punto y una extensión válida (mínimo 2 letras)
+    const domainParts = domain.split('.');
+    const tld = domainParts[domainParts.length - 1];
+    if (domainParts.length < 2 || tld.length < 2) {
+      alert(`⚠️ El correo tiene un dominio incompleto o inválido ("@${domain}").\n\nPor favor, asegúrate de escribir la extensión completa (ej. .com, .com.mx, .mx) antes de proceder.`);
+      return;
+    }
+
+    // Nivel 3: Validar typos comunes en dominios completos
+    const invalidDomains = [
+      'gmai.com', 'gamil.com', 'gmial.com', 'gmaill.com', 'gml.com',
+      'hotmai.com', 'hotmial.com', 'hormail.com',
+      'outloo.com', 'yaho.com', 'yahoo.co'
+    ];
+    if (invalidDomains.includes(domain)) {
+      alert(`⚠️ El dominio "@${domain}" es incorrecto o tiene un error de dedo.\n\nPor favor, corrígelo (ej. usando el botón "Sí, corregir correo" en pantalla) antes de proceder al pago para garantizar que recibas tus credenciales de acceso.`);
+      return;
     }
     
     setLoading(true);
