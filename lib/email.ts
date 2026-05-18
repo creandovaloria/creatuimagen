@@ -54,16 +54,25 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, contr
           </div>
 
           <h1 style="color: #0f172a; font-size: 26px; font-weight: 900; text-align: center; margin-bottom: 10px;">¡Felicidades ${nombre}! 🚀</h1>
-          <p style="font-size: 16px; line-height: 1.6; text-align: center; color: #64748b;">Tu pago ha sido confirmado. Ya eres parte de la nueva era de tarjetas digitales profesionales.</p>
+          <p style="font-size: 16px; line-height: 1.6; text-align: center; color: #64748b; margin-bottom: 30px;">Tu pago ha sido confirmado. A continuación están las credenciales para acceder a tu panel de edición:</p>
           
-          <div style="background: #f8fafc; padding: 24px; border-radius: 20px; margin: 30px 0; text-align: center; border: 1px dashed #e2e8f0;">
-            <p style="margin: 0 0 8px 0; font-size: 12px; font-weight: bold; color: #94a3b8; text-transform: uppercase; tracking: 0.1em;">Tu link reservado:</p>
-            <a href="https://bios.creatuimagen.online/${slug}" style="font-size: 22px; font-weight: 800; color: #2563eb; text-decoration: none;">bios.creatuimagen.online/${slug}</a>
+          <div style="background: #fffbeb; padding: 24px; border-radius: 20px; border: 1px solid #fef3c7; margin-bottom: 24px;">
+            <p style="margin: 0 0 12px 0; font-size: 14px; font-weight: bold; color: #92400e;">🔑 Credenciales de Acceso al Editor:</p>
+            <p style="margin: 0 0 8px 0; font-size: 15px; color: #b45309;"><b>Usuario / Correo:</b> <span style="font-family: monospace; font-size: 16px; font-weight: bold; color: #0f172a;">${email}</span></p>
+            ${contrasena ? `<p style="margin: 0 0 12px 0; font-size: 15px; color: #b45309;"><b>Contraseña Temporal:</b> <span style="font-family: monospace; font-size: 16px; background: #fef08a; padding: 4px 8px; border-radius: 6px; font-weight: bold; color: #0f172a; border: 1px solid #fde047;">${contrasena}</span></p>` : ''}
+            <p style="margin: 10px 0 0 0; font-size: 12px; color: #d97706; line-height: 1.4; border-top: 1px dashed #fde68a; padding-top: 10px;">
+              <i><b>NOTA:</b> Da clic en el botón de abajo e ingresa estas credenciales para empezar a personalizar tu Bio al instante.</i>
+            </p>
           </div>
 
-          <div style="background: #ffffff; padding: 20px; border-radius: 16px; border: 1px solid #f1f5f9; margin-bottom: 30px;">
+          <a href="https://bios.creatuimagen.online/login" 
+             style="display: block; background: #2563eb; color: white; padding: 20px; border-radius: 16px; text-decoration: none; text-align: center; font-weight: bold; font-size: 16px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2); margin-bottom: 30px;">
+            🔓 Iniciar Sesión y Editar mi Bio
+          </a>
+
+          <div style="background: #ffffff; padding: 20px; border-radius: 16px; border: 1px solid #f1f5f9; margin-bottom: 24px;">
             <p style="margin: 0 0 15px 0; font-size: 14px; font-weight: bold; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">📄 Resumen de tu Compra:</p>
-            <table style="width: 100%; font-size: 14px; color: #64748b;">
+            <table style="width: 100%; font-size: 14px; color: #64748b; margin-bottom: 15px;">
               <tr>
                 <td style="padding: 5px 0;">Producto:</td>
                 <td style="text-align: right; color: #1e293b; font-weight: bold;">Bio Digital Profesional</td>
@@ -77,27 +86,15 @@ export async function sendWelcomeEmail({ nombre, slug, email, monto = 950, contr
                 <td style="text-align: right; color: #059669; font-weight: bold;">Completado ✅</td>
               </tr>
             </table>
-          </div>
 
-          <div style="background: #fffbeb; padding: 20px; border-radius: 16px; border: 1px solid #fef3c7; margin-bottom: 30px;">
-            <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #92400e;">🔑 Acceso a tu Panel de Edición:</p>
-            <p style="margin: 0; font-size: 14px; color: #b45309;"><b>Usuario:</b> ${email}</p>
-            ${contrasena ? `<p style="margin: 5px 0 0 0; font-size: 14px; color: #b45309;"><b>Contraseña Temporal:</b> ${contrasena}</p>` : ''}
-            <p style="margin: 10px 0 0 0; font-size: 13px; color: #d97706; line-height: 1.4;">
-              <i><b>NOTA:</b> Esta es una contraseña inicial temporal. Puedes ingresar de inmediato y cambiarla en tu perfil, o restablecerla con tu correo desde la pantalla de inicio de sesión si lo requieres.</i>
-            </p>
+            <div style="background: #f8fafc; padding: 16px; border-radius: 12px; text-align: center; border: 1px dashed #e2e8f0;">
+              <p style="margin: 0 0 4px 0; font-size: 10px; font-weight: bold; color: #94a3b8; text-transform: uppercase;">Tu futuro link público:</p>
+              <a href="https://bios.creatuimagen.online/${slug}" target="_blank" style="font-size: 16px; font-weight: 800; color: #2563eb; text-decoration: none;">bios.creatuimagen.online/${slug}</a>
+            </div>
           </div>
-
-          <p style="font-size: 16px; font-weight: 600; color: #0f172a; margin-top: 30px;">¡Es hora de personalizar!</p>
-          <p style="font-size: 14px; line-height: 1.6; color: #64748b; margin-bottom: 24px;">Dale vida a tu link subiendo tu foto, redes sociales y links de contacto.</p>
-          
-          <a href="https://bios.creatuimagen.online/admin/perfiles/${slug}" 
-             style="display: block; background: #2563eb; color: white; padding: 20px; border-radius: 16px; text-decoration: none; text-align: center; font-weight: bold; font-size: 16px; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.2); margin-bottom: 15px;">
-            Configurar mi Bio ahora
-          </a>
 
           <a href="https://wa.me/525555027042?text=${waEncoded}" 
-             style="display: block; background: #f8fafc; color: #2563eb; padding: 15px; border-radius: 16px; text-decoration: none; text-align: center; font-weight: bold; font-size: 14px; border: 1px solid #e2e8f0;">
+             style="display: block; background: #f8fafc; color: #2563eb; padding: 15px; border-radius: 16px; text-decoration: none; text-align: center; font-weight: bold; font-size: 14px; border: 1px solid #e2e8f0; margin-bottom: 30px;">
             💬 Hablar con soporte por WhatsApp
           </a>
 
