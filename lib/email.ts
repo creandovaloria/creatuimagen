@@ -208,7 +208,10 @@ export async function sendAbandonmentNotification({ nombre, slug, email, whatsap
         finalWhatsApp = clean;
       }
     }
-    const waLink = finalWhatsApp ? `https://wa.me/${finalWhatsApp}` : null;
+    // Generar un mensaje de recuperación de venta personalizado y persuasivo para carritos abandonados
+    const waText = `¡Hola ${nombre}! Te saludo de Crea Tu Imagen Online. Notamos que iniciaste el proceso para adquirir tu Bio Digital Profesional (https://bios.creatuimagen.online/${slug}) pero no lograste completar tu pago. ¿Tuviste algún inconveniente con la pasarela o te gustaría que te apoye personalmente a activar tu cuenta?`;
+    const waEncoded = encodeURIComponent(waText);
+    const waLink = finalWhatsApp ? `https://wa.me/${finalWhatsApp}?text=${waEncoded}` : null;
     
     await client.emails.send({
       from: from,
