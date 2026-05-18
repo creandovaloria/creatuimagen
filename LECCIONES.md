@@ -455,5 +455,40 @@ export const dynamic = 'force-dynamic';
 **Beneficio:** Experiencia de onboarding ultra-limpia, 100% personalizada bajo la marca del SaaS. Permite acceso instantáneo al panel de edición y el usuario mantiene la facultad de cambiar la contraseña en su panel de perfil o solicitar restablecimiento vía email convencional.
 
 ---
+
+### Error 25 — Privilegios de Esquema en Supabase (Llave service_role vs superusuario)
+**Síntoma:** Consultas o inserciones a esquemas personalizados (ej: `crm.ventas`) arrojaban `42501 permission denied for schema crm` al usarse desde el cliente del usuario autenticado o desde el webhook del servidor con la `service_role` key.
+**Causa:** 
+1. PostgREST requiere habilitar explícitamente los esquemas en *Settings -> API -> Exposed Schemas*.
+2. En Supabase/PostgreSQL, el rol `service_role` (que mapea la llave maestra) no es un superusuario (como `postgres`). Aunque tiene la facultad de saltarse las reglas RLS (`BYPASSRLS`), sigue obedeciendo las restricciones estándar de esquemas y tablas. Si el esquema customizado se creó bajo `postgres` y no se le concedió acceso, `service_role` es bloqueado.
+**Solución:** Conceder privilegios explícitos a los roles pertinentes en el SQL Editor:
+```sql
+GRANT USAGE ON SCHEMA crm TO service_role, authenticated;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA crm TO service_role, authenticated;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA crm TO service_role, authenticated;
+ALTER DEFAULT PRIVILEGES IN SCHEMA crm GRANT ALL ON TABLES TO service_role, authenticated;
+```
+
+### Error 26 — Desalineación de Columnas y Silencio del Webhook (Silent Failure)
+**Síntoma:** El webhook de Mercado Pago retornaba con éxito `{ received: true }` a la pasarela, pero en la base de datos de producción no se registraban ventas, clientes, ni se enviaban los correos transaccionales de Resend.
+**Causa:**
+1. El código intentaba registrar la Inteligencia de Ventas (columnas como `canal_venta`, `vendedor`, `titulo_conceptual`) en la tabla `crm.ventas`.
+2. Estas columnas no existían físicamente en la tabla de Supabase (el motor de API devolvía un error PostgREST `PGRST204`).
+3. El webhook capturaba esta excepción de inserción en su bloque `catch` general para responder siempre `200 received: true` (evitando reintentos de pasarela), pero abortaba el flujo a la mitad antes de registrar la venta y disparar los correos.
+**Solución:**
+1. Sincronizar físicamente la tabla agregando las columnas de inteligencia comercial en Supabase:
+```sql
+ALTER TABLE crm.ventas 
+ADD COLUMN IF NOT EXISTS vendedor text DEFAULT 'Sistema',
+ADD COLUMN IF NOT EXISTS canal_venta text DEFAULT 'Web',
+ADD COLUMN IF NOT EXISTS medio_demo text,
+ADD COLUMN IF NOT EXISTS titulo_conceptual text,
+ADD COLUMN IF NOT EXISTS ideas_principales text,
+ADD COLUMN IF NOT EXISTS que_funciono text,
+ADD COLUMN IF NOT EXISTS significado_personal text;
+```
+2. Validar siempre en entornos locales levantando un servidor controlado para ver el `stdout` y capturar el stack trace del webhook al recibir payloads de prueba.
+
+---
 © 2026 Creando Valor IA
 
