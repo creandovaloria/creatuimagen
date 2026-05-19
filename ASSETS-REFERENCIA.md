@@ -31,18 +31,20 @@
 
 ---
 
-## URLs de Cloudinary — XV Regina
+## URLs de Cloudinary — XV Regina (actuales en producción)
 
-| Imagen | URL |
-|--------|-----|
-| intro | `https://res.cloudinary.com/dl66zeuix/image/upload/creatuimagen/XV-Regina/intro.jpg` |
-| musica | `https://res.cloudinary.com/dl66zeuix/image/upload/creatuimagen/XV-Regina/musica.jpg` |
-| collage | `https://res.cloudinary.com/dl66zeuix/image/upload/creatuimagen/XV-Regina/collage.jpg` |
-| restaurante | `https://res.cloudinary.com/dl66zeuix/image/upload/creatuimagen/XV-Regina/restaurante.jpg` |
-| tira | `https://res.cloudinary.com/dl66zeuix/image/upload/creatuimagen/XV-Regina/tira.jpg` |
-| flamingo | `https://res.cloudinary.com/dl66zeuix/image/upload/creatuimagen/XV-Regina/flamingo.jpg` |
+Base: `https://res.cloudinary.com/dl66zeuix/image/upload/f_auto,q_auto/`
 
-> ⚠️ Las URLs anteriores son el formato esperado. Confirmar con las URLs reales después de subir a Cloudinary.
+| Imagen | Versión / archivo |
+|--------|------------------|
+| intro | `v1779170475/Gemini_Generated_Image_c44urfc44urfc44u_pnv1tf.jpg` |
+| musica | `v1778144448/1.1_2_Reproductor_buyhad.png` |
+| collage | `v1779163175/Gemini_Generated_Image_wych0zwych0zwych_hsfnuc.jpg` |
+| tira | `v1779164899/Tira_-_fotos_kq7bvv.png` |
+| flamingo | `v1778145782/1.1_7_Flamingo_gpdtsc.png` |
+| restaurante | `v1779169244/WhatsApp_Image_2026-05-18_at_23.24.35_fnundq.jpg` |
+
+> Las URLs reales están definidas en `lib/regina-images.ts`
 
 ---
 

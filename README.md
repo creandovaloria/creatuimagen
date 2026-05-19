@@ -1,6 +1,16 @@
 # Crea Tu Imagen - Platform
 
-Plataforma SaaS Multi-tenant para la gestión de perfiles digitales (`bios`) e invitaciones (`eventos`).
+Plataforma SaaS Multi-tenant para la gestión de perfiles digitales (`bios`) e invitaciones digitales (`eventos`).
+
+**Repo:** `creandovaloria/creatuimagen-platform`  
+**Hosting:** Vercel (Creando Valor IA)  
+**URL principal:** `invitaciones.creatuimagen.online`
+
+## 🎀 Invitaciones activas
+
+| Evento | URL | Fecha | Estado |
+|--------|-----|-------|--------|
+| XV Regina | `/XV-Regina` | 6 Jun 2026 · 2pm | ✅ En producción |
 
 ## 🚀 Guía de Operación (Admin)
 

@@ -118,23 +118,24 @@ Sin base64. Sin HTML puro. Componentes React separados.
 ### XV-Regina
 | Imagen | URL |
 |--------|-----|
-| intro | `f_auto,q_auto/v1778143812/1.1_1_Intro_qw3b4e.png` |
+| intro | `f_auto,q_auto/v1779170475/Gemini_Generated_Image_c44urfc44urfc44u_pnv1tf.jpg` |
 | musica | `f_auto,q_auto/v1778144448/1.1_2_Reproductor_buyhad.png` |
-| collage | `f_auto,q_auto/v1778145447/1.1_4_Collage_Polaroid_fupy5g.png` |
-| tira | `f_auto,q_auto/v1778145084/1.1_6_Tira_mkxcnh.jpg` |
+| collage | `f_auto,q_auto/v1779163175/Gemini_Generated_Image_wych0zwych0zwych_hsfnuc.jpg` |
+| tira | `f_auto,q_auto/v1779164899/Tira_-_fotos_kq7bvv.png` |
 | flamingo | `f_auto,q_auto/v1778145782/1.1_7_Flamingo_gpdtsc.png` |
-| restaurante | pendiente |
+| restaurante | `f_auto,q_auto/v1779169244/WhatsApp_Image_2026-05-18_at_23.24.35_fnundq.jpg` |
 
 Base URL: `https://res.cloudinary.com/dl66zeuix/image/upload/`
 
 ---
 
 ## 🗓 Evento XV Regina
-- **Fecha:** 6 de Junio 2026, 4:00 pm
-- **Lugar:** Por definir
-- **RSVP:** Liz Barron +524272199374
+- **Fecha:** Sábado 6 de Junio 2026, 2:00 pm (recepción)
+- **Lugar:** Jardín para eventos "BAMBÚ" — Carretera a Santa Rosa Xajay, El Mirador, Cerrada Saturno s/n, San Juan del Río, Qro.
+- **Maps:** https://maps.google.com/?q=20.444490,-99.957016
+- **RSVP:** Liz Barron +524272199374 (WhatsApp directo)
 - **URL:** invitaciones.creatuimagen.online/XV-Regina
-- **Canción:** I Love It — Icona Pop ft. Charli XCX
+- **Canción:** I Love It — Icona Pop ft. Charli XCX (SoundCloud)
 
 ---
 

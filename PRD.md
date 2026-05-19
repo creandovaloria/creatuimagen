@@ -27,7 +27,33 @@ El sistema utiliza un **Middleware de Next.js** para interceptar peticiones y se
 
 ---
 
+## 🎀 Módulo Invitaciones — XV Regina (Mayo 2026)
+
+### Estado actual
+| Sección | Estado |
+|---------|--------|
+| Intro (foto Regina) | ✅ |
+| Dale play a mi canción favorita + flecha | ✅ |
+| Reproductor SoundCloud (I Love It) | ✅ |
+| Calendario Junio + Countdown | ✅ |
+| Tira de fotos | ✅ |
+| Dress Code (cóctel elegante) | ✅ |
+| Lugar del evento (Jardín Bambú + Maps) | ✅ |
+| Mesa de regalos (sobre) | ✅ |
+| Flamingo + botón Confirmar asistencia (WA Liz) | ✅ |
+| Footer arturobarrios.com | ✅ |
+| Formulario RSVP → Supabase | 🔜 Pendiente (mejora) |
+
+### Datos del evento
+- **URL:** invitaciones.creatuimagen.online/XV-Regina
+- **Fecha:** Sábado 6 de Junio 2026 · Recepción 2:00 pm
+- **Lugar:** Jardín "BAMBÚ" · Carretera a Santa Rosa Xajay, San Juan del Río, Qro.
+- **RSVP:** Liz Barron +524272199374
+
+---
+
 ## 🚀 Próximos Pasos
-1. **Dashboards para Clientes:** Permitir que los dueños de las Bios vean sus propias analíticas de tráfico.
-2. **Módulo de Ventas Manuales:** Interfaz para registrar pagos fuera de Mercado Pago (efectivo, PayPal).
-3. **Automatización de Renovaciones:** Sistema de alertas para perfiles por expirar.
+1. **Formulario RSVP → Supabase:** Guardar confirmaciones de asistencia en BD.
+2. **Dashboards para Clientes:** Permitir que los dueños de las Bios vean sus propias analíticas de tráfico.
+3. **Módulo de Ventas Manuales:** Interfaz para registrar pagos fuera de Mercado Pago (efectivo, PayPal).
+4. **Automatización de Renovaciones:** Sistema de alertas para perfiles por expirar.
