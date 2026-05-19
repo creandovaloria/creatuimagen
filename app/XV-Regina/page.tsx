@@ -69,10 +69,10 @@ export default function XVRegina() {
       {/* ── SECCIÓN 5: DRESS CODE + LUGAR ── */}
       <DressCode />
       <Venue
-        nombre="Limmon"
-        direccion="Paso de los Guzmán 12, Centro, San Juan del Río, Qro."
+        nombre='Jardín para eventos "BAMBÚ"'
+        direccion={"Carretera a Santa Rosa Xajay\nEl Mirador, Cerrada Saturno s/n\nPasando el centro expósitor de feria.\nAtrás del Fracc. Pedregal del Río y Restaurante Cortijo 7."}
         fecha="Sábado 23 de Mayo, 2026"
-        hora="4:00 pm"
+        hora="Recepción 2:00 pm"
         mapsUrl="https://maps.google.com/?q=20.444490,-99.957016"
       />
 

@@ -37,7 +37,7 @@ export default function Venue({ src, nombre, direccion, fecha, hora, mapsUrl, po
           )}
           <div className="font-lato text-[4vw] text-[#6b4a52] leading-relaxed">
             <strong className="font-playfair text-[5.5vw] text-[#2a1a1f] block mb-1">{nombre}</strong>
-            {direccion}<br /><br />
+            {direccion?.split("\n").map((line, i) => <span key={i}>{line}<br /></span>)}<br />
             🗓 {fecha} &nbsp;·&nbsp; 🕓 {hora}
           </div>
           {mapsUrl && (
