@@ -6,7 +6,7 @@ export const images = {
   intro:       `${CDN}/v1779161690/Tira_de_fotos_0_rupmr9.jpg`,
   musica:      `${CDN}/v1778144448/1.1_2_Reproductor_buyhad.png`,
   collage:     `${CDN}/v1779163175/Gemini_Generated_Image_wych0zwych0zwych_hsfnuc.jpg`,
-  tira:        `${CDN}/v1779163767/Disen%CC%83o_sin_ti%CC%81tulo_2_kslve4.png`,
+  tira:        `${CDN}/v1779164899/Tira_-_fotos_kq7bvv.png`,
   flamingo:    `${CDN}/v1778145782/1.1_7_Flamingo_gpdtsc.png`,
   restaurante: "", // pendiente — por definir
 } as const;
