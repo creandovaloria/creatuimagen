@@ -22,7 +22,7 @@ export default function DressCode() {
 
       {/* Aviso rosa */}
       <div className="bg-[#fde8ed] border border-[#f0b8c8] rounded-2xl px-6 py-4 max-w-xs w-full">
-        <p className="font-lato text-[4vw] text-[#b5566e] font-bold leading-relaxed">
+        <p className="font-lato text-[5.5vw] text-[#b5566e] font-bold leading-relaxed">
           🌸 ¡Reserva el rosa para la quinceañera! 🌸
         </p>
       </div>
