@@ -8,12 +8,6 @@ export default function Fotos({ collage, tira }: Props) {
     <section className="flex flex-col w-full reveal"
       style={{ background: "#fdf6f0" }}>
 
-      {/* Label sección */}
-      <div className="flex items-center gap-3 px-6 pt-8 pb-4">
-        <div className="flex-1 h-[1px] bg-[#f0b8c8]" />
-        <span className="font-dancing text-[6vw] text-[#d4718a]">momentos</span>
-        <div className="flex-1 h-[1px] bg-[#f0b8c8]" />
-      </div>
 
       {/* Collage polaroid */}
       <div className="w-full px-4 pb-4">
