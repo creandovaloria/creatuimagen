@@ -72,6 +72,7 @@ export default function XVRegina() {
       <Divider />
 
       <Venue
+        src={images.restaurante}
         nombre='Jardín para eventos "BAMBÚ"'
         direccion={"Carretera a Santa Rosa Xajay\nEl Mirador, Cerrada Saturno s/n\nPasando el centro expósitor de feria.\nAtrás del Fracc. Pedregal del Río y Restaurante Cortijo 7."}
         fecha="Sábado 6 de Junio, 2026"
