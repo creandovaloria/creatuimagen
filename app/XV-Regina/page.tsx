@@ -41,13 +41,13 @@ export default function XVRegina() {
 
       {/* ── SECCIÓN 2: MÚSICA ── */}
       <section className="w-full" style={{ background: "#fff8fa", paddingBottom: "8vw" }}>
-        <p style={{
+        <p className="font-dancing" style={{
           textAlign: "center",
-          fontFamily: "'Dancing Script', cursive",
-          fontSize: "clamp(18px, 5.5vw, 28px)",
+          fontSize: "clamp(32px, 9vw, 52px)",
           color: "#d4718a",
           padding: "6vw 4vw 2vw",
           margin: 0,
+          lineHeight: 1.2,
         }}>
           Dale play a mi canción favorita 🎵
         </p>
