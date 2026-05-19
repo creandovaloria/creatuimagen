@@ -5,7 +5,7 @@ export default function ScrollHint() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const onScroll = () => { if (window.scrollY > 80) setVisible(false); };
+    const onScroll = () => { if (window.scrollY > 400) setVisible(false); };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -13,7 +13,7 @@ export default function ScrollHint() {
   if (!visible) return null;
 
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-30 pointer-events-none">
+    <div className="flex flex-col items-center gap-1 py-4 pointer-events-none">
       <span className="font-lato text-[3vw] text-[#b5566e] tracking-widest uppercase opacity-80">
         desliza
       </span>

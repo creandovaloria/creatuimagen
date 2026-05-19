@@ -36,7 +36,6 @@ export default function XVRegina() {
       {/* ── SECCIÓN 1: INTRO ── */}
       <section className="w-full leading-none relative">
         <img src={images.intro} alt="Invitación XV años Regina" className="w-full h-auto block" />
-        <ScrollHint />
       </section>
 
       {/* ── SECCIÓN 2: MÚSICA ── */}
@@ -52,6 +51,7 @@ export default function XVRegina() {
           Dale play a mi canción favorita 🎵
         </p>
         <MusicPlayer src={images.musica} />
+        <ScrollHint />
       </section>
 
       <Divider />
