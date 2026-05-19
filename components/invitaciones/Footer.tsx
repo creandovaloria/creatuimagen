@@ -10,7 +10,7 @@ export default function Footer() {
         <span className="text-[4vw] text-[#e8a0b0]">✦</span>
         <p className="font-lato text-[2.8vw] text-[#f0b8c8] tracking-wide">
           Realizado por{" "}
-          <a href="https://arturobarrios.com" target="_blank" rel="noopener noreferrer"
+          <a href="https://invitaciones.arturobarrios.com/" target="_blank" rel="noopener noreferrer"
             className="font-bold text-white underline underline-offset-2">
             arturobarrios.com
           </a>
