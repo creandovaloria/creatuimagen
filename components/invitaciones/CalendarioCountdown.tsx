@@ -64,13 +64,14 @@ export default function CalendarioCountdown({ eventDate }: Props) {
 
       {/* Mensaje + countdown */}
       <div className="flex flex-col items-center gap-4 w-full max-w-xs">
-        <p className="font-dancing text-[6.5vw] text-[#c0486a] text-center">
-          ¡Falta muy poco!
-        </p>
-
-        <p className="font-dancing text-[5.5vw] text-[#d4718a] text-center leading-snug">
-          para vivir juntos este momento<br />tan especial 💕
-        </p>
+        <div className="flex flex-col items-center gap-1">
+          <p className="font-dancing text-[6.5vw] text-[#c0486a] text-center">
+            ¡Falta muy poco!
+          </p>
+          <p className="font-dancing text-[5.5vw] text-[#d4718a] text-center leading-snug">
+            para vivir juntos este momento<br />tan especial 💕
+          </p>
+        </div>
 
         {/* Arco */}
         <div className="w-[55%] h-3 border-t border-l border-r border-[#f0b8c8] rounded-t-full -mb-1" />
