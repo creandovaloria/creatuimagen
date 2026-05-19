@@ -68,7 +68,13 @@ export default function XVRegina() {
 
       {/* ── SECCIÓN 5: DRESS CODE + LUGAR ── */}
       <DressCode />
-      <Venue porDefinir />
+      <Venue
+        nombre="Limmon"
+        direccion="Paso de los Guzmán 12, Centro, San Juan del Río, Qro."
+        fecha="Sábado 23 de Mayo, 2026"
+        hora="4:00 pm"
+        mapsUrl="https://maps.google.com/?q=20.444490,-99.957016"
+      />
 
       <Divider />
 
