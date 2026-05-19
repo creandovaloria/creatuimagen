@@ -50,6 +50,9 @@ export default function XVRegina() {
         }}>
           Dale play a mi canción favorita 🎵
         </p>
+        <div className="flex justify-center pb-2">
+          <span className="text-[#d4718a] animate-bounce" style={{ fontSize: "8vw" }}>↓</span>
+        </div>
         <MusicPlayer src={images.musica} />
         <ScrollHint />
       </section>
