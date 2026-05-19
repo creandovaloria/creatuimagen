@@ -76,22 +76,22 @@ export default function CalendarioCountdown({ eventDate }: Props) {
         <div className="w-[55%] h-3 border-t border-l border-r border-[#f0b8c8] rounded-t-full -mb-1" />
 
         {/* Countdown */}
-        <div className="flex items-center gap-[1.5vw] bg-white border-2 border-[#f0b8c8] rounded-full px-5 py-4 shadow-md w-full justify-center">
+        <div className="flex items-center gap-[2vw] bg-white border-2 border-[#f0b8c8] rounded-3xl px-4 py-6 shadow-md w-full justify-center">
           {[
             { val: time.d, lbl: "DÍAS" },
-            { sep: "·" },
+            { sep: ":" },
             { val: time.h, lbl: "HORAS" },
-            { sep: "·" },
+            { sep: ":" },
             { val: time.m, lbl: "MIN" },
-            { sep: "·" },
+            { sep: ":" },
             { val: time.s, lbl: "SEG" },
           ].map((item, i) =>
             "sep" in item ? (
-              <span key={i} className="font-playfair text-[7vw] text-[#e8b0c0] mb-1 leading-none">{item.sep}</span>
+              <span key={i} className="font-playfair text-[10vw] text-[#f0b8c8] leading-none pb-4">{item.sep}</span>
             ) : (
-              <div key={i} className="flex flex-col items-center min-w-[10vw]">
-                <span className="font-playfair text-[9vw] font-bold text-[#c0486a] leading-none">{item.val}</span>
-                <span className="font-lato text-[1.8vw] tracking-widest text-[#d4718a] uppercase mt-0.5 font-bold">{item.lbl}</span>
+              <div key={i} className="flex flex-col items-center gap-1">
+                <span className="font-playfair font-bold text-[#c0486a] leading-none" style={{ fontSize: "clamp(36px, 13vw, 64px)" }}>{item.val}</span>
+                <span className="font-lato text-[2.8vw] tracking-widest text-[#d4718a] uppercase font-bold">{item.lbl}</span>
               </div>
             )
           )}
