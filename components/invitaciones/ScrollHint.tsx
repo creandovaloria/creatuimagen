@@ -15,7 +15,7 @@ export default function ScrollHint() {
   return (
     <div className="flex flex-col items-center gap-1 py-4 pointer-events-none">
       <span className="font-lato text-[3vw] text-[#b5566e] tracking-widest uppercase opacity-80">
-        desliza
+        sigue bajando
       </span>
       <div className="w-[1px] h-6 bg-[#b5566e] opacity-60 animate-bounce" />
       <span className="text-[#b5566e] text-[4vw] animate-bounce">↓</span>
