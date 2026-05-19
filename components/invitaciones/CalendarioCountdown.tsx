@@ -68,6 +68,10 @@ export default function CalendarioCountdown({ eventDate }: Props) {
           ¡Falta muy poco!
         </p>
 
+        <p className="font-dancing text-[5.5vw] text-[#d4718a] text-center leading-snug">
+          para vivir juntos este momento<br />tan especial 💕
+        </p>
+
         {/* Arco */}
         <div className="w-[55%] h-3 border-t border-l border-r border-[#f0b8c8] rounded-t-full -mb-1" />
 
@@ -92,10 +96,6 @@ export default function CalendarioCountdown({ eventDate }: Props) {
             )
           )}
         </div>
-
-        <p className="font-dancing text-[5.5vw] text-[#d4718a] text-center leading-snug">
-          para vivir juntos este momento<br />tan especial 💕
-        </p>
       </div>
     </section>
   );
