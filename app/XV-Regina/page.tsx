@@ -57,7 +57,7 @@ export default function XVRegina() {
       <Divider />
 
       {/* ── SECCIÓN 3: CALENDARIO + COUNTDOWN ── */}
-      <CalendarioCountdown eventDate="2026-06-06T16:00:00" />
+      <CalendarioCountdown eventDate="2026-06-06T14:00:00" />
 
       <Divider />
 
@@ -71,7 +71,7 @@ export default function XVRegina() {
       <Venue
         nombre='Jardín para eventos "BAMBÚ"'
         direccion={"Carretera a Santa Rosa Xajay\nEl Mirador, Cerrada Saturno s/n\nPasando el centro expósitor de feria.\nAtrás del Fracc. Pedregal del Río y Restaurante Cortijo 7."}
-        fecha="Sábado 23 de Mayo, 2026"
+        fecha="Sábado 6 de Junio, 2026"
         hora="Recepción 2:00 pm"
         mapsUrl="https://maps.google.com/?q=20.444490,-99.957016"
       />
