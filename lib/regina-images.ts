@@ -3,7 +3,7 @@
 const CDN = "https://res.cloudinary.com/dl66zeuix/image/upload/f_auto,q_auto";
 
 export const images = {
-  intro:       `${CDN}/v1779161690/Tira_de_fotos_0_rupmr9.jpg`,
+  intro:       `${CDN}/v1779170475/Gemini_Generated_Image_c44urfc44urfc44u_pnv1tf.jpg`,
   musica:      `${CDN}/v1778144448/1.1_2_Reproductor_buyhad.png`,
   collage:     `${CDN}/v1779163175/Gemini_Generated_Image_wych0zwych0zwych_hsfnuc.jpg`,
   tira:        `${CDN}/v1779164899/Tira_-_fotos_kq7bvv.png`,
