@@ -1,5 +1,3 @@
-import RSVPForm from "./RSVPForm";
-
 interface Props {
   src: string;
   whatsapp: string;
@@ -32,24 +30,7 @@ export default function RSVP({ src, whatsapp, mensaje }: Props) {
         </p>
       </div>
 
-      {/* Separador */}
-      <div className="flex items-center gap-3 w-full max-w-xs">
-        <div className="flex-1 h-[1px] bg-[#f0b8c8]" />
-        <span className="text-[5vw] text-[#e8a0b0]">🌸</span>
-        <div className="flex-1 h-[1px] bg-[#f0b8c8]" />
-      </div>
-
-      {/* Formulario RSVP */}
-      <RSVPForm />
-
-      {/* Separador */}
-      <div className="flex items-center gap-3 w-full max-w-xs">
-        <div className="flex-1 h-[1px] bg-[#f0b8c8]" />
-        <span className="font-lato text-[3vw] text-[#b5566e]">o si prefieres</span>
-        <div className="flex-1 h-[1px] bg-[#f0b8c8]" />
-      </div>
-
-      {/* Botón WA — temporal hasta que esté probado el form */}
+      {/* Botón confirmar */}
       <a href={waUrl} target="_blank" rel="noopener noreferrer"
         style={{
           display: "flex", alignItems: "center", justifyContent: "center",
@@ -64,11 +45,11 @@ export default function RSVP({ src, whatsapp, mensaje }: Props) {
           boxShadow: "0 8px 30px rgba(192,72,106,0.45)",
         }}>
         <span style={{ fontSize: "6vw" }}>💬</span>
-        Confirmar por WhatsApp
+        Confirmar asistencia
       </a>
 
       <p className="font-lato text-[3vw] text-[#b5566e] opacity-70">
-        Te redirigirá a WhatsApp con Liz Barrón
+        Con Liz Barrón, Event Planner
       </p>
     </section>
   );
