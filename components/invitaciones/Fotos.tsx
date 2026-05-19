@@ -9,13 +9,6 @@ export default function Fotos({ collage, tira }: Props) {
       style={{ background: "#fdf6f0" }}>
 
 
-      {/* Collage polaroid */}
-      <div className="w-full px-4 pb-4">
-        <div className="w-full rounded-2xl overflow-hidden shadow-md border border-[#f5c2d0]">
-          <img src={collage} alt="Fotos de Regina" className="w-full h-auto block" />
-        </div>
-      </div>
-
       {/* Tira fotográfica */}
       <div className="w-full px-4 pb-8">
         <div className="w-full rounded-2xl overflow-hidden shadow-md border border-[#f5c2d0]">
