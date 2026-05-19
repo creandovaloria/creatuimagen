@@ -90,7 +90,7 @@ export default function CalendarioCountdown({ eventDate }: Props) {
               <span key={i} className="font-playfair text-[10vw] text-[#f0b8c8] leading-none pb-4">{item.sep}</span>
             ) : (
               <div key={i} className="flex flex-col items-center gap-1">
-                <span className="font-playfair font-bold text-[#c0486a] leading-none" style={{ fontSize: "clamp(36px, 13vw, 64px)" }}>{item.val}</span>
+                <span className="font-lato font-bold text-[#c0486a] leading-none" style={{ fontSize: "clamp(36px, 13vw, 64px)", fontVariantNumeric: "tabular-nums", letterSpacing: "0.02em" }}>{item.val}</span>
                 <span className="font-lato text-[2.8vw] tracking-widest text-[#d4718a] uppercase font-bold">{item.lbl}</span>
               </div>
             )
