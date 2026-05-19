@@ -80,7 +80,7 @@ export default function XVRegina() {
         direccion={"Carretera a Santa Rosa Xajay\nEl Mirador, Cerrada Saturno s/n\nPasando el centro expósitor de feria.\nAtrás del Fracc. Pedregal del Río y Restaurante Cortijo 7."}
         fecha="Sábado 6 de Junio, 2026"
         hora="Recepción 2:00 pm"
-        mapsUrl="https://maps.google.com/?q=20.444490,-99.957016"
+        mapsUrl="https://maps.google.com/?q=20.44450,-99.95703"
       />
 
       <Divider />
