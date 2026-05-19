@@ -11,7 +11,7 @@ export default function Footer() {
         <p className="font-lato text-[2.8vw] text-[#f0b8c8] tracking-wide">
           Realizado por{" "}
           <a href="https://invitaciones.arturobarrios.com/" target="_blank" rel="noopener noreferrer"
-            className="font-bold text-white underline underline-offset-2">
+            className="font-bold text-white">
             arturobarrios.com
           </a>
         </p>
