@@ -34,17 +34,17 @@ export default function RSVP({ src, whatsapp, mensaje }: Props) {
       <a href={waUrl} target="_blank" rel="noopener noreferrer"
         style={{
           display: "flex", alignItems: "center", justifyContent: "center",
-          gap: "10px", width: "100%", maxWidth: "340px",
-          borderRadius: "20px", padding: "20px 24px",
+          gap: "12px", width: "100%", maxWidth: "380px",
+          borderRadius: "24px", padding: "26px 32px",
           background: "linear-gradient(135deg, #c0486a 0%, #d4718a 100%)",
           color: "white",
           fontFamily: "var(--font-lato), sans-serif",
-          fontSize: "4.5vw", fontWeight: "700",
+          fontSize: "5.5vw", fontWeight: "700",
           letterSpacing: "2px", textTransform: "uppercase",
           textDecoration: "none",
-          boxShadow: "0 8px 30px rgba(192,72,106,0.45)",
+          boxShadow: "0 10px 36px rgba(192,72,106,0.5)",
         }}>
-        <span style={{ fontSize: "6vw" }}>💬</span>
+        <span style={{ fontSize: "7vw" }}>💬</span>
         Confirmar asistencia
       </a>
 
