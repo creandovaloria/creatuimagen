@@ -81,7 +81,21 @@ export default function XVRegina() {
 
       <Divider />
 
-      {/* ── SECCIÓN 6: FLAMINGO + RSVP ── */}
+      {/* ── SECCIÓN 6: REGALOS ── */}
+      <section className="flex flex-col items-center px-8 py-12 gap-4 text-center reveal"
+        style={{ background: "#fff8fa" }}>
+        <span style={{ fontSize: "10vw" }}>💌</span>
+        <p className="font-dancing" style={{ fontSize: "clamp(22px, 7vw, 36px)", color: "#c0486a", lineHeight: 1.3 }}>
+          Mesa de regalos
+        </p>
+        <p className="font-lato" style={{ fontSize: "clamp(14px, 4vw, 18px)", color: "#6b4a52", lineHeight: 1.8, maxWidth: 320 }}>
+          Tu presencia es mi mejor regalo, pero si deseas consentirme, agradeceré tu detalle en sobre 💌
+        </p>
+      </section>
+
+      <Divider />
+
+      {/* ── SECCIÓN 7: FLAMINGO + RSVP ── */}
       <RSVP
         src={images.flamingo}
         whatsapp="524272199374"
