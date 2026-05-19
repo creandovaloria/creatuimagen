@@ -68,6 +68,9 @@ export default function XVRegina() {
 
       {/* ── SECCIÓN 5: DRESS CODE + LUGAR ── */}
       <DressCode />
+
+      <Divider />
+
       <Venue
         nombre='Jardín para eventos "BAMBÚ"'
         direccion={"Carretera a Santa Rosa Xajay\nEl Mirador, Cerrada Saturno s/n\nPasando el centro expósitor de feria.\nAtrás del Fracc. Pedregal del Río y Restaurante Cortijo 7."}
